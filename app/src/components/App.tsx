@@ -12,7 +12,7 @@ class App extends React.Component {
           <h1 className="App-title">Cool Admin Panel with a Spinning Logo</h1>
         </header>
         <p className="App-intro">
-          
+          heyyy
         </p>
       </div>
     );
