@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "redux-saga": "^0.16.0",
-    "typesafe-actions": "^2.0.4"
-  }
-}
