@@ -1,28 +1,33 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-
 import { db } from "../../firebase";
+import { SubforumList } from '../Landing/SubforumList';
 import { withAuthorization } from "../Session/withAuthorization";
+import { FormCreateSubforum } from './FormCreateSubforum';
 import { UserList } from "./UserList";
 
 class HomeComponent extends React.Component {
   public componentDidMount() {
-    const { onSetUsers }: any = this.props;
+    const { onSetUsers, onSetSubforums }: any = this.props;
 
+    db.onceGetSubforums().then(snapshot => {
+      onSetSubforums(snapshot.val())
+    })
     db.onceGetUsers().then(snapshot => {
       onSetUsers(snapshot.val())
-    });
+    })
   }
 
   public render() {
-    const { users }: any = this.props;
+    const { users, subforums }: any = this.props;
 
     return (
       <div>
         <h1>Home</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
-
+        {!!subforums && <SubforumList subforums={subforums} />}
+        <h2>Create Subforums</h2>
+        <FormCreateSubforum />
         {!!users && <UserList users={users} />}
       </div>
     );
@@ -30,11 +35,14 @@ class HomeComponent extends React.Component {
 }
 
 const mapStateToProps = (state: any) => ({
-  users: state.forumState.users
+  users: state.subforumState.users,
+  subforums: state.forumState.subforums
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onSetUsers: (users: any) => dispatch({ type: "USERS_SET", users })
+  onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
+  onSetSubforums: (subforums: any) => dispatch({ type: "FORUM_SET_SUBFORUMS", subforums }),
+  onSetCurrentUser: (user: any) => dispatch({ type: "USER_SET_CURRENT_USER", user }),
 });
 
 const authCondition = (authUser: any) => !!authUser;

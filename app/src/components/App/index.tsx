@@ -10,6 +10,7 @@ import { PasswordForget } from "../PasswordForget";
 import { withAuthentication } from "../Session/withAuthentication";
 import { SignIn } from "../SignIn";
 import { SignUp } from "../SignUp";
+import { Subforum } from '../Subforum';
 
 class AppComponent extends React.Component {
   constructor(props: any) {
@@ -41,6 +42,7 @@ class AppComponent extends React.Component {
             <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
             <Route exact={true} path={routes.HOME} component={Home} />
             <Route exact={true} path={routes.ACCOUNT} component={Account} />
+            <Route exact={true} path={routes.SUBFORUM} component={Subforum} />
           </Switch>
         </div>
       </BrowserRouter>
