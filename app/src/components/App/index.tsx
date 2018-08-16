@@ -17,12 +17,14 @@ class AppComponent extends React.Component {
     super(props);
 
     this.state = {
-      authUser: null
+      authUser: null,
+      currentUser: null
     };
   }
 
   public componentDidMount() {
     firebase.auth.onAuthStateChanged(authUser => {
+      // TODO: add currentUser to the entire scope
       authUser
         ? this.setState(() => ({ authUser }))
         : this.setState(() => ({ authUser: null }));
