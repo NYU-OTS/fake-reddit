@@ -49,13 +49,11 @@ export class SignUpForm extends React.Component<
     auth
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser: any) => {
-
         // Create a user in your own accessible Firebase Database too
         db.doCreateUser(authUser.user.uid, username, email)
           .then(() => {
-
             this.setState(() => ({ ...SignUpForm.INITIAL_STATE }));
-            history.push(routes.HOME);
+            history.push(routes.SIGN_IN);
           })
           .catch(error => {
             this.setState(SignUpForm.propKey("error", error));
