@@ -24,3 +24,6 @@ export const doPasswordUpdate = async (password: string) => {
   }
   throw Error("No auth.currentUser!");
 };
+
+// Retrieve User UID
+export const getuid = () => auth.currentUser ? auth.currentUser.uid : null;

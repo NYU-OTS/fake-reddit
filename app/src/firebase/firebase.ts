@@ -4,14 +4,15 @@ import "firebase/database";
 
 // Initialize Firebase
 const config = {
-  apiKey: "AIzaSyCy7rSV9Fak3LhTrI5cdHn6gAgzVqaVREA",
-  authDomain: "test-599ea.firebaseapp.com",
-  databaseURL: "https://test-599ea.firebaseio.com",
-  projectId: "test-599ea",
-  storageBucket: "test-599ea.appspot.com",
+  apiKey: "AIzaSyCLm2nnVI-ZOX_09kWDY2nLs8zwnws7iz4",
+  authDomain: "not-fake-reddit-at-all.firebaseapp.com",
+  databaseURL: "https://not-fake-reddit-at-all.firebaseio.com",
+  projectId: "not-fake-reddit-at-all",
+  storageBucket: "not-fake-reddit-at-all.appspot.com",
   // tslint:disable-next-line:object-literal-sort-keys
-  messagingSenderId: "505895138785"
+  messagingSenderId: "119898869079"
 };
+firebase.initializeApp(config);
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
