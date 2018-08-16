@@ -10,7 +10,9 @@ class HomeComponent extends React.Component {
   public componentDidMount() {
     const { onSetUsers }: any = this.props;
 
-    db.onceGetUsers().then(snapshot => onSetUsers(snapshot.val()));
+    db.onceGetUsers().then(snapshot => {
+      onSetUsers(snapshot.val())
+    });
   }
 
   public render() {
@@ -28,7 +30,7 @@ class HomeComponent extends React.Component {
 }
 
 const mapStateToProps = (state: any) => ({
-  users: state.userState.users
+  users: state.forumState.users
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

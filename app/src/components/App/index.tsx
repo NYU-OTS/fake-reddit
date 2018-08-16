@@ -38,11 +38,7 @@ class AppComponent extends React.Component {
             <Route exact={true} path={routes.LANDING} component={Landing} />
             <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
             <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
-            <Route
-              exact={true}
-              path={routes.PASSWORD_FORGET}
-              component={PasswordForget}
-            />
+            <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
             <Route exact={true} path={routes.HOME} component={Home} />
             <Route exact={true} path={routes.ACCOUNT} component={Account} />
           </Switch>
