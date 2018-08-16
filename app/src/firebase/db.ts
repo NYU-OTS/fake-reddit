@@ -7,9 +7,12 @@ export const R_EMAILS = 'emails'
 // User API
 export const doCreateUser = (id: string, username: string, email: string) => {
   const keyEmail = email.replace(/\./g, ',')
-  db.ref(`${R_EMAILS}/${keyEmail}`).set(email)
-  db.ref(`${R_USERNAMES}/${username}`).set(id)
-  db.ref(`${R_USERS}/${id}`).set({ email, username })
+  return db.ref(`${R_USERS}/${id}`).set({ email, username }).then(() => {
+    db.ref(`${R_USERNAMES}/${username}`).set(id)
+    db.ref(`${R_EMAILS}/${keyEmail}`).set(id)
+  }).catch(error => {
+    throw error
+  })
 }
 
 export const onceGetUsers = () => db.ref(`${R_USERS}`).once("value")
