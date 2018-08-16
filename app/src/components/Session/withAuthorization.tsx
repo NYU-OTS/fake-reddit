@@ -26,7 +26,8 @@ export const withAuthorization = (condition: any) => (Component: any) => {
   }
 
   const mapStateToProps = (state: any) => ({
-    authUser: state.sessionState.authUser
+    authUser: state.userState.authUser,
+    currentUser: state.userState.currentUser
   });
 
   return compose(

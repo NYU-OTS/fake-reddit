@@ -38,7 +38,7 @@ const NavigationNonAuth = () => (
 );
 
 const mapStateToProps = (state: any) => ({
-  authUser: state.sessionState.authUser
+  authUser: state.userState.authUser
 });
 
 export const Navigation = connect(mapStateToProps)(NavigationComponent);

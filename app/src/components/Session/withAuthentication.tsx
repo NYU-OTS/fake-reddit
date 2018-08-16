@@ -29,8 +29,8 @@ export const withAuthentication = (Component: any) => {
   }
 
   const mapDispatchToProps = (dispatch: any) => ({
-    onSetAuthUser: (authUser: any) =>
-      dispatch({ type: "AUTH_USER_SET", authUser })
+    onSetAuthUser: (authUser: any) => dispatch({ type: "USER_SET_AUTH_USER", authUser }),
+    onSetCurrentUser: (currentUser: any) => dispatch({ type: "USER_SET_CURRENT_USER", currentUser })
   });
 
   return connect(
