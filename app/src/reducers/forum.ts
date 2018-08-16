@@ -1,16 +1,16 @@
 const INITIAL_STATE = {
-  users: {}
-};
+  subforums: {}
+}
 
-const setUsers = (state: any, action: any) => ({
+const setSubforums = (state: {}, action: any) => ({
   ...state,
-  users: action.users
+  subforums: action.subforums
 })
 
 export function forumReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
-    case "USERS_SET": {
-      return setUsers(state, action);
+    case "FORUM_SET_SUBFORUMS": {
+      return setSubforums(state, action)
     }
     default:
       return state;

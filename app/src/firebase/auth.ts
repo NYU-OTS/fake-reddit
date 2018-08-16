@@ -26,4 +26,4 @@ export const doPasswordUpdate = async (password: string) => {
 };
 
 // Retrieve User UID
-export const getuid = () => auth.currentUser ? auth.currentUser.uid : null;
+export const getuid = () => auth.currentUser ? auth.currentUser.uid : '';
