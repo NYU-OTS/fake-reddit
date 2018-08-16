@@ -12,6 +12,9 @@
     ]
   },
   "rules": {
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "no-console": false,
+    "no-unused-variable": false,
+    "object-literal-sort-keys": false
   }
 }
