@@ -7,10 +7,9 @@ const config = {
   apiKey: "AIzaSyCLm2nnVI-ZOX_09kWDY2nLs8zwnws7iz4",
   authDomain: "not-fake-reddit-at-all.firebaseapp.com",
   databaseURL: "https://not-fake-reddit-at-all.firebaseio.com",
+  messagingSenderId: "119898869079",
   projectId: "not-fake-reddit-at-all",
   storageBucket: "not-fake-reddit-at-all.appspot.com",
-  // tslint:disable-next-line:object-literal-sort-keys
-  messagingSenderId: "119898869079"
 };
 firebase.initializeApp(config);
 
