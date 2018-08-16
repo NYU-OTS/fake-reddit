@@ -1,16 +1,23 @@
 const INITIAL_STATE = {
-  users: {}
+  currentUser: {
+    email: '',
+    messages: [],
+    password: '', // lol
+    posts: [],
+    uid: '',
+    username: '',
+  },
 };
-
-const applySetUsers = (state: any, action: any) => ({
-  ...state,
-  users: action.users
-});
 
 export function userReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
-    case "USERS_SET": {
-      return applySetUsers(state, action);
+    case "USERS_POST": {
+      if (state.currentUser) {
+        if (state.currentUser.uid) {
+          return true;
+        }
+      }
+      return false;
     }
     default:
       return state;

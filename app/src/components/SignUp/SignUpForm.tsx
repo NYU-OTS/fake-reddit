@@ -22,7 +22,7 @@ interface InterfaceState {
 export class SignUpForm extends React.Component<
   InterfaceProps,
   InterfaceState
-> {
+  > {
   private static INITIAL_STATE = {
     email: "",
     error: null,
@@ -81,7 +81,7 @@ export class SignUpForm extends React.Component<
           value={username}
           onChange={event => this.setStateWithEvent(event, "username")}
           type="text"
-          placeholder="Full Name"
+          placeholder="Username"
         />
         <input
           value={email}
