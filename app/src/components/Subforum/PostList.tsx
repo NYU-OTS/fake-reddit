@@ -1,4 +1,5 @@
-import * as React from "react";
+import * as React from 'react';
+import * as routes from '../../constants/routes';
 
 interface InterfaceProps {
   posts?: any;
@@ -20,11 +21,8 @@ export class PostList extends React.Component<InterfaceProps, {}> {
         {
           Object.keys(posts).map(key => (
             <div key={key}>
-              <h4>{posts[key].subject}</h4>
-              <p>{posts[key].poster}</p>
-              <p>{posts[key].timestamp}</p>
-              <p>{posts[key].content}</p>
-              <hr />
+              <h4><a href={routes.POST + '/' + key}>{posts[key].subject}</a></h4>
+              <p>{posts[key].poster} | {posts[key].timestamp}</p>
             </div>
           ))
         }
