@@ -1,34 +1,42 @@
 const INITIAL_STATE = {
-    mods: {},
-    users: {},
-    subforum: ''
+    poster: {},
+    comments: {},
+    subforum: '',
 }
 
-const setUsers = (state: {}, action: any) => ({
+const setPoster = (state: {}, action: any) => ({
     ...state,
     users: action.users
 })
 
-const setPosts = (state: {}, action: any) => ({
+const setSubject = (state: {}, action: any) => ({
     ...state,
     posts: action.posts
 })
 
-const setSubforum = (state: {}, action: any) => ({
+const setContent = (state: {}, action: any) => ({
     ...state,
     subforum: action.subforum
 })
 
+const setComments = (state: {}, action: any) => ({
+    ...state,
+    comments: action.comments
+})
+
 export function postReducer(state = INITIAL_STATE, action: any) {
     switch (action.type) {
-        case "POST_SET_USERS": {
-            return setUsers(state, action)
+        case "POST_SET_POSTER": {
+            return setPoster(state, action)
         }
-        case "POST_SET_POSTS": {
-            return setPosts(state, action)
+        case "POST_SET_SUBJECT": {
+            return setSubject(state, action)
         }
-        case "POST_SET_SUBFORUM": {
-            return setSubforum(state, action)
+        case "POST_SET_CONTENT": {
+            return setContent(state, action)
+        }
+        case "POST_SET_COMMENT": {
+            return setComments(state, action)
         }
         default:
             return state;
