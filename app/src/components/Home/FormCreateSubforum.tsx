@@ -19,10 +19,10 @@ interface InterfaceState {
 const mapStateToProps = (state: any) => ({
     users: state.subforumState.users,
     subforums: state.forumState.subforums,
-    currentUser: state.sessionState.currentUser
+    currentUser: state.userState.currentUser
 });
 
-export class FormCreateSubforum extends React.Component<
+export class FormCreateSubforumComponent extends React.Component<
     InterfaceProps,
     InterfaceState
     > {
@@ -39,31 +39,29 @@ export class FormCreateSubforum extends React.Component<
 
     constructor(props: InterfaceProps) {
         super(props);
-        this.state = { ...FormCreateSubforum.INITIAL_STATE };
+        this.state = { ...FormCreateSubforumComponent.INITIAL_STATE };
     }
 
     public onSubmit(event: any) {
         event.preventDefault();
 
-        const { name, description, currentUser } = this.state;
+        const { name, description } = this.state;
         const uid = auth.getuid();
+        const { currentUser } = this.props;
 
         const username = currentUser.username;
         console.log(username);
         db.doCreateSubforum(uid, username, name, description).then(() => {
             const error = {}
-            this.setState(() => ({ ...FormCreateSubforum.INITIAL_STATE }));
-            this.setState(FormCreateSubforum.propKey("error", error));
+            this.setState(() => ({ ...FormCreateSubforumComponent.INITIAL_STATE }));
+            this.setState(FormCreateSubforumComponent.propKey("error", error));
         }).catch(error => {
-            this.setState(FormCreateSubforum.propKey("error", error));
+            this.setState(FormCreateSubforumComponent.propKey("error", error));
         });
     }
 
     public render() {
         const { name, description, error } = this.state;
-        const { currentUser } = this.props;
-
-        console.log(currentUser)
 
         const isInvalid = name === '' || description === '';
 
@@ -91,13 +89,13 @@ export class FormCreateSubforum extends React.Component<
     }
 
     private setStateWithEvent(event: any, columnType: string) {
-        this.setState(FormCreateSubforum.propKey(columnType, (event.target as any).value));
+        this.setState(FormCreateSubforumComponent.propKey(columnType, (event.target as any).value));
     }
 }
 
 const authCondition = (authUser: any) => !!authUser;
 
-export const Home = compose(
+export const FormCreateSubforum = compose(
     withAuthorization(authCondition),
     connect(mapStateToProps)
-)(FormCreateSubforum);
+)(FormCreateSubforumComponent);

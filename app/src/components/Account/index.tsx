@@ -15,7 +15,7 @@ const AccountComponent = ({ authUser }: any) => (
 );
 
 const mapStateToProps = (state: any) => ({
-  authUser: state.sessionState.authUser
+  authUser: state.userState.authUser
 });
 
 const authCondition = (authUser: any) => !!authUser;

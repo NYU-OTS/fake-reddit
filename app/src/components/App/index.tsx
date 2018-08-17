@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import * as routes from "../../constants/routes";
-import { firebase } from "../../firebase";
+import { db, firebase } from "../../firebase";
 import { Account } from "../Account";
 import { Home } from "../Home";
 import { Landing } from "../Landing";
@@ -25,9 +25,19 @@ class AppComponent extends React.Component {
   public componentDidMount() {
     firebase.auth.onAuthStateChanged(authUser => {
       // TODO: add currentUser to the entire scope
-      authUser
-        ? this.setState(() => ({ authUser }))
-        : this.setState(() => ({ authUser: null }));
+      if (authUser) {
+        db.getUserByUID(authUser.uid).once('value', snapshot => {
+          this.setState({
+            authUser,
+            currentUser: snapshot.val()
+          })
+        })
+      } else {
+        this.setState({
+          authUser: null,
+          currentUser: null
+        })
+      }
     });
   }
 

@@ -8,6 +8,7 @@ import { firebase } from "../../firebase";
 interface InterfaceProps {
   history?: any;
   authUser?: any;
+  currentUser?: any;
 }
 
 export const withAuthorization = (condition: any) => (Component: any) => {

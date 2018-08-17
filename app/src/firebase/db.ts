@@ -52,9 +52,11 @@ export const doCreatePost = (uid: string, username: string, subforum: string, su
 export const doCreateSubforum = (uid: string, username: string, name: string, description: string) => {
   const mods = {}
   const users = {}
+  const creator = {}
   mods[uid] = username
   users[uid] = username
-  return db.ref(`${R_SUBFORUMS}/${name}`).set({ description, mods })
+  creator[uid] = username
+  return db.ref(`${R_SUBFORUMS}/${name}`).set({ description, mods, users, creator })
     .then(() => {
       db.ref(`${R_USERS}/${uid}/${F_MOD_FOR}/${name}`).set(name)
     })
@@ -87,6 +89,12 @@ export const getUsernameByUID = (uid: string) => db.ref(`${R_USERS}/${uid}/${F_U
  * Grab the list of user once
  */
 export const onceGetUsers = () => db.ref(`${R_USERS}`).once("value")
+
+/*
+ * Grab the list of user once
+ * @param uid: UID of user
+ */
+export const onceGetUserByUID = (uid: string) => db.ref(`${R_USERS}/${uid}`).once('value')
 
 /*
  * Grab the list of subforums once

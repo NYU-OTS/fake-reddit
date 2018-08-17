@@ -1,25 +1,35 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { firebase } from "../../firebase";
+import { db, firebase } from "../../firebase";
 
 interface InterfaceProps {
   authUser?: any;
+  currentUser?: any;
 }
 
 interface InterfaceState {
   authUser?: any;
+  currentUser?: any;
 }
 
 export const withAuthentication = (Component: any) => {
   class WithAuthentication extends React.Component<
     InterfaceProps,
     InterfaceState
-  > {
+    > {
     public componentDidMount() {
-      const { onSetAuthUser }: any = this.props;
+    const { onSetAuthUser, onSetCurrentUser }: any = this.props;
 
       firebase.auth.onAuthStateChanged(authUser => {
-        authUser ? onSetAuthUser(authUser) : onSetAuthUser(null);
+        if (authUser) {
+          db.onceGetUserByUID(authUser.uid).then(snapshot => {
+            onSetAuthUser(authUser)
+            onSetCurrentUser(snapshot.val())
+          })
+        } else {
+          onSetAuthUser(null)
+          onSetCurrentUser(null)
+        }
       });
     }
 
