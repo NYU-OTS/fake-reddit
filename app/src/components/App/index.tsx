@@ -54,7 +54,7 @@ class AppComponent extends React.Component {
             <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
             <Route exact={true} path={routes.HOME} component={Home} />
             <Route exact={true} path={routes.ACCOUNT} component={Account} />
-            <Route exact={true} path={routes.SUBFORUM} component={Subforum} />
+            <Route exact={true} path={routes.SUBFORUM + '/:sub'} component={Subforum} />
           </Switch>
         </div>
       </BrowserRouter>
