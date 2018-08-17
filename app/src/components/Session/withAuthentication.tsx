@@ -24,7 +24,10 @@ export const withAuthentication = (Component: any) => {
         if (authUser) {
           db.onceGetUserByUID(authUser.uid).then(snapshot => {
             onSetAuthUser(authUser)
-            onSetCurrentUser(snapshot.val())
+            onSetCurrentUser({
+              ...snapshot.val(),
+              uid: authUser.uid
+            })
           })
         } else {
           onSetAuthUser(null)

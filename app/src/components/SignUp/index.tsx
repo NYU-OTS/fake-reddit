@@ -8,7 +8,7 @@ const SignUpComponent = () => (
     <h1>SignUp</h1>
     <SignUpForm />
   </div>
-);
+)
 
 export const SignUpLink = () => (
   <p>

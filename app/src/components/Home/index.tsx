@@ -2,9 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { db } from "../../firebase";
-import { SubforumList } from '../Landing/SubforumList';
 import { withAuthorization } from "../Session/withAuthorization";
 import { FormCreateSubforum } from './FormCreateSubforum';
+import { SubforumList } from './SubforumList';
 import { UserList } from "./UserList";
 
 class HomeComponent extends React.Component {
@@ -42,7 +42,6 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
   onSetSubforums: (subforums: any) => dispatch({ type: "FORUM_SET_SUBFORUMS", subforums }),
-  onSetCurrentUser: (user: any) => dispatch({ type: "USER_SET_CURRENT_USER", user }),
 });
 
 const authCondition = (authUser: any) => !!authUser;

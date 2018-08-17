@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as routes from '../../constants/routes';
 
 interface InterfaceProps {
     subforums?: any;
@@ -17,7 +18,7 @@ export class SubforumList extends React.Component<InterfaceProps, {}> {
                 <h2>List of Subforums</h2>
                 {
                     Object.keys(subforums).map(key => (
-                        <div key={key}>{key}</div>
+                        <p><a href={routes.SUBFORUM + `/${key}`} key={key}>{key}</a></p>
                     ))
                 }
             </div>

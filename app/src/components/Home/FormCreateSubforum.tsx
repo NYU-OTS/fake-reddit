@@ -5,7 +5,6 @@ import { auth, db } from "../../firebase";
 import { withAuthorization } from "../Session/withAuthorization";
 
 interface InterfaceProps {
-    error?: any;
     currentUser?: any;
 }
 
@@ -13,12 +12,9 @@ interface InterfaceState {
     error: any;
     name: string;
     description: string;
-    currentUser: any;
 }
 
 const mapStateToProps = (state: any) => ({
-    users: state.subforumState.users,
-    subforums: state.forumState.subforums,
     currentUser: state.userState.currentUser
 });
 
@@ -30,7 +26,6 @@ export class FormCreateSubforumComponent extends React.Component<
         error: null,
         name: '',
         description: '',
-        currentUser: null
     };
 
     private static propKey(propertyName: string, value: any): object {
@@ -50,9 +45,10 @@ export class FormCreateSubforumComponent extends React.Component<
         const { currentUser } = this.props;
 
         const username = currentUser.username;
-        console.log(username);
         db.doCreateSubforum(uid, username, name, description).then(() => {
-            const error = {}
+            const error = {
+                message: 'cool'
+            }
             this.setState(() => ({ ...FormCreateSubforumComponent.INITIAL_STATE }));
             this.setState(FormCreateSubforumComponent.propKey("error", error));
         }).catch(error => {
