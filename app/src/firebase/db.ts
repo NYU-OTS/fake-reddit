@@ -11,6 +11,7 @@ export const F_MOD_OF = 'modOf'
 export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
 export const F_KEYS = 'keys'
+export const F_COMMENTS = 'comments'
 
 export const ROLE_USER = 'user'
 export const ROLE_ADMIN = 'admin'
@@ -38,6 +39,21 @@ export const doCreateUser = (
     throw error
   })
 
+/*
+ * Creates a comment in a post
+ * @param key: key of post
+ * @param content: comment content
+ * @param username: username of user
+ */
+export const doCreateComment = (
+  key: string,
+  content: string,
+  username: string
+) => {
+  const timestamp = Date.now()
+  return db.ref(`${R_POSTS}/${F_KEYS}/${key}/${F_COMMENTS}`)
+    .push({ content, poster: username, timestamp })
+}
 
 /*
  * Creates a post record in database
