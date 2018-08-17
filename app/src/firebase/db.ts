@@ -10,6 +10,7 @@ export const F_SUBSCRIPTIONS = 'subscriptions'
 export const F_MOD_OF = 'modOf'
 export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
+export const F_KEYS = 'keys'
 
 export const ROLE_USER = 'user'
 export const ROLE_ADMIN = 'admin'
@@ -51,17 +52,20 @@ export const doCreatePost = (
   subject: string,
   content: string
 ) => {
-  return db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subforum}`)
+  const timestamp = Date.now()
+  return db.ref(`${R_POSTS}/${F_KEYS}`)
     .push({
-      subject, content,
+      subject, content, subforum, timestamp,
       poster: username,
-      timestamp: Date.now()
     })
     .then(snap => {
-      db.ref(`${R_POSTS}/${R_USERS}/${username}`)
-        .push({
-          subject, content, subforum,
-          timestamp: Date.now()
+      db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subforum}/${snap.key}`)
+        .set({
+          subject, content, timestamp, poster: username,
+        })
+      db.ref(`${R_POSTS}/${R_USERS}/${username}/${snap.key}`)
+        .set({
+          subject, content, subforum, timestamp
         })
     })
 }
@@ -160,11 +164,18 @@ export const onceGetPostsByUser = (uid: string) =>
   db.ref(`${R_POSTS}/${R_USERS}/${uid}`).once('value')
 
 /*
+ * Grab list of comments from post
+ * @param key: ID of post
+ */
+export const onceGetCommentsOfPost = (key: string) =>
+  db.ref(`${R_POSTS}/${F_KEYS}/${key}`).once('value')
+
+/*
  * Grab post information by ID
  * @param id: ID of post
  */
-export const onceGetPost = (id: string) =>
-  db.ref(`${R_POSTS}/${id}`).once('value')
+export const onceGetPostByID = (id: string) =>
+  db.ref(`${R_POSTS}/${F_KEYS}/${id}`).once('value')
 
 /*
  * Grab list of users in a subforum
@@ -184,4 +195,4 @@ export const onceGetSubforums = () =>
  * Grab the list of posts in a subforum once
  */
 export const onceGetPosts = () => 
-db.ref(`${R_SUBFORUMS}/${R_POSTS}`).once("value")
+  db.ref(`${R_SUBFORUMS}/${R_POSTS}`).once("value")
