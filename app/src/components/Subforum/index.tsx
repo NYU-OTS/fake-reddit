@@ -9,9 +9,25 @@ import { FormCreatePost } from './FormCreatePost'
 import { PostList } from './PostList'
 import { UserList } from "./UserList"
 
-class SubforumComponent extends React.Component {
+interface InterfaceProps {
+    currentUser: any;
+}
+
+interface InterfaceState {
+    error: any;
+    subscribed: boolean
+}
+
+class SubforumComponent extends React.Component<
+    InterfaceProps, 
+    InterfaceState
+> {
     constructor(props: any) {
         super(props)
+        this.state = {
+            error: '',
+            subscribed: false
+        }
     }
 
     public componentDidMount() {
@@ -24,12 +40,20 @@ class SubforumComponent extends React.Component {
 
         if (isValidPath) {
             const subName = path.substring(prefixLength);
+            const { currentUser } = this.props
 
             db.onceGetSubforumByName(subName).then(snapshot => {
                 if (snapshot.val()) {
                     onSetSubforum({
                         ...snapshot.val(),
                         name: subName
+                    })
+                    const subscribed = currentUser 
+                    ? subName in currentUser.subcriptions
+                    : false;
+                    this.setState({
+                        ...this.state,
+                        subscribed
                     })
                 }
             })
@@ -60,24 +84,45 @@ class SubforumComponent extends React.Component {
         }
     ) => {
         db.doSubscribe(subforum.name, currentUser.uid, currentUser.username)
-        this.forceUpdate()
+        this.setState({ ...this.state, subscribed: true })
+    }
+
+    public unsubscribe = (
+        subforum: {
+            name: string
+        },
+        currentUser: {
+            uid: string,
+            username: string
+        }
+    ) => {
+        db.doUnsubscribe(subforum.name, currentUser.uid)
+        this.setState({ ...this.state, subscribed: false })
     }
 
 
     public render() {
         const { users, posts, subforum, currentUser }: any = this.props;
-        const subscribed = currentUser ? currentUser.uid in users : false;
+        const { subscribed } = this.state;
+
+        const ButtonSubscribe = () => (
+            <button onClick={() => this.subscribe(subforum, currentUser)}>
+                Subscribe
+            </button>
+        )
+
+        const ButtonUnsubscribe = () => (
+            <button onClick={() => this.unsubscribe(subforum, currentUser)}>
+                Unsubscribe
+            </button>
+        )
 
         return (
             <div>
                 <h1>Posts in {!!subforum && subforum.name}</h1>
-                <button
-                    onClick={() => this.subscribe(subforum, currentUser)}
-                    disabled={subscribed}
-                >
-                    {subscribed ? 'Subscribed' : 'Subscribe'}
-                </button>
-
+                {
+                    subscribed ? <ButtonUnsubscribe /> : <ButtonSubscribe />
+                }
                 <h2>Create Post</h2>
                 <FormCreatePost />
                 {!!users && <UserList users={users} />}

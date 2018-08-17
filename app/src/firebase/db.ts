@@ -6,6 +6,7 @@ export const R_EMAILS = 'emails'
 export const R_POSTS = 'posts'
 export const R_SUBFORUMS = 'subforums'
 
+export const F_SUBSCRIPTIONS = 'subscriptions'
 export const F_MOD_OF = 'modOf'
 export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
@@ -52,7 +53,7 @@ export const doCreatePost = (
 ) => {
   return db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subforum}`)
     .push({
-      subject, content, 
+      subject, content,
       poster: username,
       timestamp: Date.now()
     })
@@ -96,8 +97,21 @@ export const doCreateSubforum = (
  * @param uid: UID of User
  * @param username: Username of User
  */
-export const doSubscribe = (sub: string, uid: string, username: string) =>
+export const doSubscribe = (sub: string, uid: string, username: string) => {
   db.ref(`${R_SUBFORUMS}/${sub}/${R_USERS}/${uid}`).set(username)
+  db.ref(`${R_USERS}/${uid}/${F_SUBSCRIPTIONS}/${sub}`).set(sub)
+}
+
+/*
+ * Adds a user to a subforum
+ * @param sub: Name of subforum
+ * @param uid: UID of User
+ * @param username: Username of User
+ */
+export const doUnsubscribe = (sub: string, uid: string) => {
+  db.ref(`${R_SUBFORUMS}/${sub}/${R_USERS}/${uid}`).remove()
+  db.ref(`${R_USERS}/${uid}/${F_SUBSCRIPTIONS}/${sub}`).remove()
+}
 
 /*
  * Retrieve user information by its UID
