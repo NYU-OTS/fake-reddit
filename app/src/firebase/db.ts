@@ -57,7 +57,7 @@ export const doCreateComment = (
 }
 
 /*
- * Creates a comment in a post
+ * Deletes a comment in a post
  * @param postKey: key of post
  * @param commentKey: key of comment
  */
@@ -98,6 +98,21 @@ export const doCreatePost = (
 }
 
 /*
+ * Deletes a post
+ * @param postKey: key of post
+ */
+export const doDeletePost = (
+  postKey: string,
+) =>
+  db.ref(`${R_POSTS}/${F_KEYS}/${postKey}`).once('value', snapPost => {
+    const poster = snapPost.val().poster
+    db.ref(`${R_POSTS}/${R_USERS}/${poster}/${postKey}`).once('value', snapUser => {
+      const subforum = snapUser.val().subforum
+      db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subforum}/${postKey}`).remove()
+    }).then(() => db.ref(`${R_POSTS}/${R_USERS}/${poster}/${postKey}`).remove())
+  }).then(() => db.ref(`${R_POSTS}/${F_KEYS}/${postKey}`).remove())
+
+/*
  * Creates a subforum record in database
  * @param uid: auth.uid
  * @param sub: sub of subforum
@@ -121,22 +136,6 @@ export const doCreateSubforum = (
       db.ref(`${R_USERS}/${uid}/${F_OWNER_OF}/${sub}`).set(sub)
     })
 }
-
-/*
- * Creates a comment in a post
- * @param postKey: key of post
- * @param subName: name of subforum
- * @param username: username of current user
- */
-export const doDeletePost = (
-  postKey: string,
-  subName: string,
-  username: string
-) => 
-db.ref(`${R_POSTS}/${F_KEYS}/${postKey}`).remove().then(() => {
-  db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}/${postKey}`).remove()
-  db.ref(`${R_POSTS}/${R_USERS}/${username}/${postKey}`).remove()
-})
 
 /*
  * Adds a user to a subforum
