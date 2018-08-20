@@ -149,17 +149,20 @@ export const doDeleteSubforum = (
     db.ref(`${R_USERS}/${owner}`)
     .once('value', snapOwner => {
       snapOwner.forEach(child => {
+        // remove subforum from owner(s)
         db.ref(`${R_USERS}/${child.key}/${F_OWNER_OF}/${subName}`).remove()
       })
     })
     db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}/${R_POSTS}`)
       .once('value', snapPosts => {
         snapPosts.forEach(child => {
+          // remove related posts from users
           db.ref(`${R_POSTS}/${R_USERS}/${child.val().poster}/${child.key}`).remove()
         })
       })
+      // remove subforum from posts
       .then(() => db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}`).remove())
-  }).then(() => db.ref(`${R_SUBFORUMS}/${subName}`).remove())
+  }).then(() => db.ref(`${R_SUBFORUMS}/${subName}`).remove()) // remove subforum
 
 /*
  * Adds a user to a subforum
