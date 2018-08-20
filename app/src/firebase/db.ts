@@ -7,6 +7,7 @@ export const R_POSTS = 'posts'
 export const R_SUBFORUMS = 'subforums'
 
 export const F_SUBSCRIPTIONS = 'subscriptions'
+export const F_DM = 'dm'
 export const F_MOD_OF = 'modOf'
 export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
@@ -147,12 +148,12 @@ export const doDeleteSubforum = (
   db.ref(`${R_SUBFORUMS}/${subName}`).once('value', snapSub => {
     const owner = snapSub.val().owner
     db.ref(`${R_USERS}/${owner}`)
-    .once('value', snapOwner => {
-      snapOwner.forEach(child => {
-        // remove subforum from owner(s)
-        db.ref(`${R_USERS}/${child.key}/${F_OWNER_OF}/${subName}`).remove()
+      .once('value', snapOwner => {
+        snapOwner.forEach(child => {
+          // remove subforum from owner(s)
+          db.ref(`${R_USERS}/${child.key}/${F_OWNER_OF}/${subName}`).remove()
+        })
       })
-    })
     db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}/${R_POSTS}`)
       .once('value', snapPosts => {
         snapPosts.forEach(child => {
@@ -184,6 +185,28 @@ export const doSubscribe = (sub: string, uid: string, username: string) => {
 export const doUnsubscribe = (sub: string, uid: string) => {
   db.ref(`${R_SUBFORUMS}/${sub}/${R_USERS}/${uid}`).remove()
   db.ref(`${R_USERS}/${uid}/${F_SUBSCRIPTIONS}/${sub}`).remove()
+}
+
+/*
+ * Sends a message
+ * @param from: UID of sender
+ * @param to: UID of receiver
+ * @param message: Message being sent
+ */
+export const doSendMessage = (from: string, to: string, message: string) => {
+  const timestamp = Date.now()
+  return db.ref(`${R_USERS}/${from}/${F_DM}/${to}`)
+    .push({
+      message, timestamp,
+      type: 'to'
+    })
+    .then(snap => {
+      db.ref(`${R_USERS}/${to}/${F_DM}/${from}/${snap.key}`)
+        .set({
+          message, timestamp,
+          type: 'from'
+        })
+    })
 }
 
 /*

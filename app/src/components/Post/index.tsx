@@ -8,19 +8,9 @@ import { withAuthorization } from "../Session/withAuthorization"
 import { CommentList } from './CommentList'
 import { FormCreateComment } from './FormCreateComment'
 
-interface InterfaceState {
-    error: any;
-}
-
-class PostComponent extends React.Component<
-    {}, 
-    InterfaceState
-> {
+class PostComponent extends React.Component {
     constructor(props: any) {
         super(props)
-        this.state = {
-            error: '',
-        }
     }
 
     public componentDidMount() {
@@ -45,23 +35,17 @@ class PostComponent extends React.Component<
         }
     }
 
-    public refresh = () => {
-        this.forceUpdate();
-    }
-
     public render() {
         const { post }: any = this.props;
         const comments = post.comments;
-
-        console.log(comments);
 
         return (
             <div>
                 <h3>{ post.subject }</h3>
                 <p>{ post.content }</p>
-                {!!comments && <CommentList comments={comments} />}
                 <h2>Comment</h2>
                 <FormCreateComment />
+                {!!comments && <CommentList comments={comments} />}
             </div>
         );
     }

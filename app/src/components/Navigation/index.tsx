@@ -12,7 +12,7 @@ const NavigationComponent = ({ authUser }: any) => (
 const NavigationAuth = () => (
   <ul>
     <li>
-      <Link to={routes.LANDING}>Landing</Link>
+      <Link to={routes.LANDING}>Browse Forums</Link>
     </li>
     <li>
       <Link to={routes.HOME}>Home</Link>

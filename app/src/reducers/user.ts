@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   authUser: null,
   currentUser: null,
-  posts: {},
+  recipient: null
 }
 
 const setAuthUser = (state: any, action: any) => ({
@@ -9,10 +9,10 @@ const setAuthUser = (state: any, action: any) => ({
   authUser: action.authUser
 });
 
-const setPosts = (state: {}, action: any) => ({
+const setRecipient = (state: any, action: any) => ({
   ...state,
-  posts: action.posts,
-})
+  recipient: action.recipient
+});
 
 const setCurrentUser = (state: {}, action: any) => ({
   ...state,
@@ -24,11 +24,11 @@ export function userReducer(state = INITIAL_STATE, action: any) {
     case "USER_SET_CURRENT_USER": {
       return setCurrentUser(state, action)
     }
-    case "USER_SET_POST": {
-      return setPosts(state, action)
-    }
     case "USER_SET_AUTH_USER": {
       return setAuthUser(state, action)
+    }
+    case "USER_SET_RECIPIENT": {
+      return setRecipient(state, action)
     }
     default:
       return state;
