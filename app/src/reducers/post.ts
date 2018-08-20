@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-    post: {}
+    post: {},
+    comments: {}
 }
 
 const setPost = (state: {}, action: any) => ({

@@ -45,10 +45,15 @@ class PostComponent extends React.Component<
         }
     }
 
+    public refresh = () => {
+        this.forceUpdate();
+    }
+
     public render() {
         const { post }: any = this.props;
         const comments = post.comments;
 
+        console.log(comments);
 
         return (
             <div>

@@ -41,17 +41,17 @@ export const doCreateUser = (
 
 /*
  * Creates a comment in a post
- * @param key: key of post
- * @param content: comment content
+ * @param postKey: key of post
  * @param username: username of user
+ * @param content: comment content
  */
 export const doCreateComment = (
-  key: string,
+  postKey: string,
+  username: string,
   content: string,
-  username: string
 ) => {
   const timestamp = Date.now()
-  return db.ref(`${R_POSTS}/${F_KEYS}/${key}/${F_COMMENTS}`)
+  return db.ref(`${R_POSTS}/${F_KEYS}/${postKey}/${F_COMMENTS}`)
     .push({ content, poster: username, timestamp })
 }
 
@@ -183,8 +183,8 @@ export const onceGetPostsByUser = (uid: string) =>
  * Grab list of comments from post
  * @param key: ID of post
  */
-export const onceGetCommentsOfPost = (key: string) =>
-  db.ref(`${R_POSTS}/${F_KEYS}/${key}`).once('value')
+export const onceGetCommentsByPost = (key: string) =>
+  db.ref(`${R_POSTS}/${F_KEYS}/${key}/${F_COMMENTS}`).once('value')
 
 /*
  * Grab post information by ID

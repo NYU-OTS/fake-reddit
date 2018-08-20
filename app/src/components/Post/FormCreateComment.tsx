@@ -3,24 +3,23 @@ import { connect } from "react-redux";
 import { db } from "../../firebase";
 
 interface InterfaceProps {
-    subforum: any;
+    post: any;
     currentUser: any;
-    onSetComments: any;
+    onSetPost: any;
 }
 
 interface InterfaceState {
     error: any;
-    subject: string;
     content: string;
 }
 
 const mapStateToProps = (state: any) => ({
     currentUser: state.userState.currentUser,
-    subforum: state.subforumState.subforum
+    post: state.postState.post
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onSetComments: (posts: any) => dispatch({ type: "POST_SET_COMMENTS", posts }),
+    onSetPost: (post: any) => dispatch({ type: "POST_SET_POST", post })
 });
 
 class FormCreateCommentComponent extends React.Component<
@@ -29,7 +28,6 @@ class FormCreateCommentComponent extends React.Component<
     > {
     private static INITIAL_STATE = {
         error: null,
-        subject: '',
         content: '',
     };
 
@@ -45,23 +43,25 @@ class FormCreateCommentComponent extends React.Component<
     public onSubmit(event: any) {
         event.preventDefault();
 
-        const { subject, content } = this.state;
-        const { subforum, currentUser, onSetComments } = this.props;
-
-        const subName = subforum.name;
+        const { post, currentUser, onSetPost } = this.props;
+        const { content } = this.state;
         const username = currentUser.username;
+        const postKey = post.key;
 
-        if (username && subName) {
-            db.doCreatePost(username, subName, subject, content).then(() => {
+        if (username && content) {
+            db.doCreateComment(postKey, username, content).then(() => {
                 const error = {
                     message: 'nice'
                 };
                 this.setState(() => ({ ...FormCreateCommentComponent.INITIAL_STATE }));
                 this.setState(FormCreateCommentComponent.propKey("error", error));
                 
-                db.onceGetPostsBySubforum(subName).then(snapshot => {
+                db.onceGetPostByID(postKey).then((snapshot: any) => {
                     if (snapshot.val()) {
-                        onSetComments(snapshot.val())
+                        onSetPost({
+                            ...snapshot.val(),
+                            key: snapshot.key
+                        })
                     }
                 })
             })
@@ -69,26 +69,19 @@ class FormCreateCommentComponent extends React.Component<
     }
 
     public render() {
-        const { subject, content, error } = this.state;
+        const { content, error } = this.state;
         const { currentUser } = this.props;
 
-        const isInvalid = subject === '' || content === '';
+        const isInvalid = content === '';
 
         return currentUser
             ? (
                 <form onSubmit={(event) => this.onSubmit(event)}>
-                    <input
-                        value={subject}
-                        onChange={event => this.setStateWithEvent(event, "subject")}
-                        type="text"
-                        placeholder="Give it a subject"
-                    />
-                    <br />
                     <textarea
                         rows={4}
                         value={content}
                         onChange={event => this.setStateWithEvent(event, "content")}
-                        placeholder="Enter your content here..."
+                        placeholder="Your comment goes here..."
                     />
                     <button disabled={isInvalid} type="submit">
                         Post
