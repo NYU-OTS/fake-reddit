@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as routes from "../../constants/routes";
 import { auth, db } from "../../firebase";
-import history from '../App/history';
 
 interface InterfaceProps {
   email?: string;
@@ -52,7 +51,7 @@ export class SignUpForm extends React.Component<
         db.doCreateUser(authUser.user.uid, username, email)
           .then(() => {
             this.setState(() => ({ ...SignUpForm.INITIAL_STATE }));
-            history.push(routes.HOME);
+            window.location.href = routes.HOME;
           })
           .catch(error => {
             this.setState(SignUpForm.propKey("error", error));
