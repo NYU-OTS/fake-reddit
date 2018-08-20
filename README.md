@@ -10,3 +10,7 @@ The demo app only has one "subreddit". User registration is public, but moderato
 # Stack
 * Front: ```TypeScript```, ```React``` and ```Redux```
 * Back: ```Firebase```
+
+# How to run?
+* Locally: ```cd app && yarn start``` or ```cd app && npm start```
+* Remotely: Go to ```https://not-fake-reddit-at-all.firebaseapp.com```
