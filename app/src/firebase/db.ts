@@ -12,6 +12,7 @@ export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
 export const F_KEYS = 'keys'
 export const F_COMMENTS = 'comments'
+export const F_OWNER = 'owner'
 
 export const ROLE_USER = 'user'
 export const ROLE_ADMIN = 'admin'
@@ -54,6 +55,16 @@ export const doCreateComment = (
   return db.ref(`${R_POSTS}/${F_KEYS}/${postKey}/${F_COMMENTS}`)
     .push({ content, poster: username, timestamp })
 }
+
+/*
+ * Creates a comment in a post
+ * @param postKey: key of post
+ * @param commentKey: key of comment
+ */
+export const doDeleteComment = (
+  postKey: string,
+  commentKey: string
+) => db.ref(`${R_POSTS}/${F_KEYS}/${postKey}/${F_COMMENTS}/${commentKey}`).remove()
 
 /*
  * Creates a post record in database
@@ -110,6 +121,22 @@ export const doCreateSubforum = (
       db.ref(`${R_USERS}/${uid}/${F_OWNER_OF}/${sub}`).set(sub)
     })
 }
+
+/*
+ * Creates a comment in a post
+ * @param postKey: key of post
+ * @param subName: name of subforum
+ * @param username: username of current user
+ */
+export const doDeletePost = (
+  postKey: string,
+  subName: string,
+  username: string
+) => 
+db.ref(`${R_POSTS}/${F_KEYS}/${postKey}`).remove().then(() => {
+  db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}/${postKey}`).remove()
+  db.ref(`${R_POSTS}/${R_USERS}/${username}/${postKey}`).remove()
+})
 
 /*
  * Adds a user to a subforum
