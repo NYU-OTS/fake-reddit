@@ -138,6 +138,30 @@ export const doCreateSubforum = (
 }
 
 /*
+ * Deletes a subforum
+ * @param subName: name of subforum
+ */
+export const doDeleteSubforum = (
+  subName: string,
+) =>
+  db.ref(`${R_SUBFORUMS}/${subName}`).once('value', snapSub => {
+    const owner = snapSub.val().owner
+    db.ref(`${R_USERS}/${owner}`)
+    .once('value', snapOwner => {
+      snapOwner.forEach(child => {
+        db.ref(`${R_USERS}/${child.key}/${F_OWNER_OF}/${subName}`).remove()
+      })
+    })
+    db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}/${R_POSTS}`)
+      .once('value', snapPosts => {
+        snapPosts.forEach(child => {
+          db.ref(`${R_POSTS}/${R_USERS}/${child.val().poster}/${child.key}`).remove()
+        })
+      })
+      .then(() => db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}`).remove())
+  }).then(() => db.ref(`${R_SUBFORUMS}/${subName}`).remove())
+
+/*
  * Adds a user to a subforum
  * @param sub: Name of subforum
  * @param uid: UID of User
