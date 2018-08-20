@@ -14,12 +14,12 @@ export class CommentList extends React.Component<InterfaceProps, {}> {
 
     return (
       <div>
-        <h2>List of Posts on this Subforum</h2>
+        <h2>List of Comments on this Post</h2>
         <hr />
         {
           Object.keys(comments).map(key => (
             <div key={key}>
-              <p>{comments[key].poster}</p>
+              <p>{comments[key].poster} | {comments[key].timestamp}</p>
               <p>{comments[key].content}</p>
               <hr />
             </div>

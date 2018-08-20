@@ -18,7 +18,11 @@ export class SubforumList extends React.Component<InterfaceProps, {}> {
                 <h2>List of Subforums</h2>
                 {
                     Object.keys(subforums).map(key => (
-                        <p><a href={routes.SUBFORUM + `/${key}`} key={key}>{key}</a></p>
+                        <p key={key}>
+                            <a href={routes.SUBFORUM + `/${key}`} key={key}>
+                                {key}
+                            </a>
+                        </p>
                     ))
                 }
             </div>

@@ -5,7 +5,8 @@ import { auth, db } from "../../firebase";
 import { withAuthorization } from "../Session/withAuthorization";
 
 interface InterfaceProps {
-    currentUser?: any;
+    currentUser: any;
+    onSetSubforums: any;
 }
 
 interface InterfaceState {
@@ -16,6 +17,10 @@ interface InterfaceState {
 
 const mapStateToProps = (state: any) => ({
     currentUser: state.userState.currentUser
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    onSetSubforums: (subforums: any) => dispatch({ type: "FORUM_SET_SUBFORUMS", subforums }),
 });
 
 export class FormCreateSubforumComponent extends React.Component<
@@ -41,16 +46,20 @@ export class FormCreateSubforumComponent extends React.Component<
         event.preventDefault();
 
         const { name, description } = this.state;
+        const { currentUser, onSetSubforums } = this.props;
         const uid = auth.getuid();
-        const { currentUser } = this.props;
 
         const username = currentUser.username;
-        db.doCreateSubforum(uid, username, name, description).then(() => {
+        db.doCreateSubforum(uid, username, name.trim(), description).then(() => {
             const error = {
                 message: 'cool'
             }
             this.setState(() => ({ ...FormCreateSubforumComponent.INITIAL_STATE }));
             this.setState(FormCreateSubforumComponent.propKey("error", error));
+
+            db.onceGetSubforums().then(snapshot => {
+                onSetSubforums(snapshot.val())
+            })
         }).catch(error => {
             this.setState(FormCreateSubforumComponent.propKey("error", error));
         });
@@ -93,5 +102,8 @@ const authCondition = (authUser: any) => !!authUser;
 
 export const FormCreateSubforum = compose(
     withAuthorization(authCondition),
-    connect(mapStateToProps)
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )
 )(FormCreateSubforumComponent);
