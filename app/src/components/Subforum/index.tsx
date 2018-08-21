@@ -1,6 +1,7 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { withRouter } from 'react-router-dom'
+import { compose } from "recompose";
 import * as routes from '../../constants/routes'
 import { auth, db } from "../../firebase"
 import { FormCreatePost } from './FormCreatePost'
@@ -135,7 +136,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     onSetSubscribed: (subscribed: any) => dispatch({ type: "SUBFORUM_SET_SUBSCRIBED", subscribed }),
 });
 
-export const Subforum = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(SubforumComponent));
+export const Subforum = compose(
+    withRouter,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )
+)(SubforumComponent);

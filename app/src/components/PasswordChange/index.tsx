@@ -3,7 +3,7 @@ import { auth } from "../../firebase";
 
 interface InterfaceProps {
   error?: any;
-  history?: any;
+  // history?: any;
   passwordOne?: string;
   passwordTwo?: string;
 }

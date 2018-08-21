@@ -13,7 +13,6 @@ import { SignIn } from '../SignIn';
 import { SignUp } from '../SignUp';
 import { Subforum } from '../Subforum';
 
-
 class AppComponent extends React.Component {
   constructor(props: any) {
     super(props);

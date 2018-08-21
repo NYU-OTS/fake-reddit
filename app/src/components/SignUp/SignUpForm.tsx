@@ -5,7 +5,7 @@ import { auth, db } from "../../firebase";
 interface InterfaceProps {
   email?: string;
   error?: any;
-  history?: any;
+  // history?: any;
   passwordOne?: string;
   passwordTwo?: string;
   username?: string;
