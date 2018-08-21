@@ -4,32 +4,25 @@ import { db } from "../../firebase";
 import { SubforumList } from "../Forum/SubforumList";
 
 interface InterfaceProps {
-  currentUser: any;
   onSetSubforums: any;
   onShowNotification: any;
   onHideNotification: any;
-  message: string;
+  notif: string;
   subforums: {};
 }
 
 const mapStateToProps = (state: any) => ({
-  currentUser: state.userState.currentUser,
   subforums: state.forumState.subforums,
-  message: state.userState.message,
+  notif: state.userState.notif,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
   onSetSubforums: (subforums: any) => dispatch({ type: "FORUM_SET_SUBFORUMS", subforums }),
-  onShowNotification: (message: string) => {
-    setTimeout(() => {
-      return dispatch({ type: "SHOW_NOTIFICATION", message })
-    }, 5000)
-  },
+  onShowNotification: (notif: string) => dispatch({ type: "SHOW_NOTIFICATION", notif }),
   onHideNotification: () => {
     setTimeout(() => {
       return dispatch({ type: "HIDE_NOTIFICATION" })
-    }, 10000)
+    }, 5000)
   },
 });
 
@@ -52,8 +45,9 @@ class LandingComponent extends React.Component<
       onShowNotification,
       onHideNotification,
     } = this.props
+
     db.onceGetSubforums().then(snapshot => {
-      onSetSubforums(snapshot.val())
+      onSetSubforums(snapshot.key)
     })
 
     onShowNotification('Heyyy your attention please...Nevermind!')
@@ -68,23 +62,15 @@ class LandingComponent extends React.Component<
   }
 
   public render() {
-    const { currentUser, subforums, message } = this.props;
+    const { notif } = this.props;
     const { time } = this.state;
     return (
-      currentUser
-        ? (
-          <div>
-            <h2>Subforums</h2>
-            <h5>{!!time && time}</h5>
-            <p>{message}</p>
-            {!!subforums && <SubforumList subforums={subforums} />}
-          </div>
-        )
-        : (
-          <div>
-            <h2>Landing Page</h2>
-          </div>
-        )
+      <div>
+        <h2>Landing Page</h2>
+        <h5>{!!time && time}</h5>
+        <p>{notif}</p>
+        <SubforumList />
+      </div>
     )
   }
 }

@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
-  authUser: null,
-  currentUser: null,
-  recipient: null
+  authUser: null, // firebase auth()
+  currentUser: null, // user db record
+  recipient: '', // UID of user
+  notif: '' // notification message
 }
 
 const setAuthUser = (state: any, action: any) => ({
@@ -14,6 +15,11 @@ const setRecipient = (state: any, action: any) => ({
   recipient: action.recipient
 });
 
+const setMessages = (state: any, action: any) => ({
+  ...state,
+  messages: action.messages
+});
+
 const setCurrentUser = (state: {}, action: any) => ({
   ...state,
   currentUser: action.currentUser
@@ -21,12 +27,12 @@ const setCurrentUser = (state: {}, action: any) => ({
 
 const showNotification = (state: {}, action: any) => ({
   ...state,
-  message: action.message
+  notif: action.notif
 })
 
 const hideNotification = (state: {}) => ({
   ...state,
-  message: ''
+  notif: ''
 })
 
 export function userReducer(state = INITIAL_STATE, action: any) {
@@ -39,6 +45,9 @@ export function userReducer(state = INITIAL_STATE, action: any) {
     }
     case "USER_SET_RECIPIENT": {
       return setRecipient(state, action)
+    }
+    case "USER_SET_MESSAGES": {
+      return setMessages(state, action)
     }
     case "SHOW_NOTIFICATION": {
       return showNotification(state, action)

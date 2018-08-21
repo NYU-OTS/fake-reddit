@@ -1,38 +1,40 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { db } from "../../firebase";
 import { UserList } from "../Forum/UserList";
 import { withAuthorization } from "../Session/withAuthorization";
 import { FormCreateSubforum } from './FormCreateSubforum';
-import { FormDM } from "./FormDM";
+import './index.css';
+import { MessageList } from "./MessageList";
 
 class HomeComponent extends React.Component {
-  public componentDidMount() {
-    const { onSetUsers }: any = this.props;
-
-    db.onceGetUsers().then(snapshot => {
-      onSetUsers(snapshot.val())
-    })
-  }
-
   public render() {
-    const { users }: any = this.props;
-
+    const { currentUser }: any = this.props;
     return (
-      <div>
-        <h1>Home</h1>
-        <FormDM />
-        {!!users && <UserList users={users} />}
-        <h2>Create Subforums</h2>
-        <FormCreateSubforum />
-      </div>
+      currentUser
+        ? (
+          <div>
+            <div className="split left">
+              <h1>Home</h1>
+              <UserList />
+              <h2>Create Subforums</h2>
+              <FormCreateSubforum />
+            </div>
+
+            <div className="split right">
+              <MessageList />
+            </div>
+          </div>
+        )
+        : (
+          <div>Loading...</div>
+        )
     );
   }
 }
 
 const mapStateToProps = (state: any) => ({
-  users: state.subforumState.users,
+  currentUser: state.userState.currentUser
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

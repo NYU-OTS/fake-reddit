@@ -1,4 +1,4 @@
-import { db } from "./firebase";
+import { db } from './firebase';
 
 export const R_USERS = 'users'
 export const R_USERNAMES = 'usernames'
@@ -225,7 +225,7 @@ export const getUsernameByUID = (uid: string) =>
 /*
  * Grab the list of user once
  */
-export const onceGetUsers = () => db.ref(`${R_USERS}`).once("value")
+export const onceGetUsers = () => db.ref(`${R_USERS}`).once('value')
 
 /*
  * Grab info of user by UID
@@ -281,10 +281,27 @@ export const onceGetUsersBySubforum = (sub: string) =>
  * @param sub: sub of subforum
  */
 export const onceGetSubforums = () =>
-  db.ref(`${R_SUBFORUMS}`).once("value")
+  db.ref(`${R_SUBFORUMS}`).once('value')
 
 /*
  * Grab the list of posts in a subforum once
  */
 export const onceGetPosts = () => 
-  db.ref(`${R_SUBFORUMS}/${R_POSTS}`).once("value")
+  db.ref(`${R_SUBFORUMS}/${R_POSTS}`).once('value')
+
+/*
+ * Gets messages from recipient
+ * @param sender: sender's UID
+ * @param recipient: recipient's UID
+ */
+export const onceGetMessages = (
+  sender: string, 
+  recipient: string
+) =>
+  db.ref(`${R_USERS}/${sender}/${F_DM}/${recipient}`).once('value')
+
+export const refMessages = (
+  sender: string, 
+  recipient: string
+) =>
+  db.ref(`${R_USERS}/${sender}/${F_DM}/${recipient}`)
