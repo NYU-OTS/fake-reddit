@@ -1,10 +1,8 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { withRouter } from 'react-router-dom'
-import { compose } from "recompose"
 import * as routes from '../../constants/routes'
 import { db } from "../../firebase"
-import { withAuthorization } from "../Session/withAuthorization"
 import { CommentList } from './CommentList'
 import { FormCreateComment } from './FormCreateComment'
 
@@ -39,7 +37,8 @@ class PostComponent extends React.Component {
         const { post }: any = this.props;
         const comments = post.comments;
 
-        return (
+        return (post 
+            ? (
             <div>
                 <h3>{ post.subject }</h3>
                 <p>{ post.content }</p>
@@ -47,24 +46,25 @@ class PostComponent extends React.Component {
                 <FormCreateComment />
                 {!!comments && <CommentList comments={comments} />}
             </div>
+            ) : (
+            <div>
+                <h3>Loading brain power...</h3>
+            </div>
+            )
         );
     }
 }
 
 const mapStateToProps = (state: any) => ({
-    post: state.postState.post
+    post: state.postState.post,
+    currentUser: state.userState.currentUser,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSetPost: (post: any) => dispatch({ type: "POST_SET_POST", post }),
 });
 
-const authCondition = (authUser: any) => !!authUser;
-
-export const Post = compose(
-    withAuthorization(authCondition),
-    connect(
+export const Post = connect(
         mapStateToProps,
         mapDispatchToProps
-    )
-)(withRouter(PostComponent));
+)(withRouter(PostComponent))

@@ -1,10 +1,8 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { withRouter } from 'react-router-dom'
-import { compose } from "recompose"
 import * as routes from '../../constants/routes'
 import { auth, db } from "../../firebase"
-import { withAuthorization } from "../Session/withAuthorization"
 import { FormCreatePost } from './FormCreatePost'
 import { PostList } from './PostList'
 import { UserList } from "./UserList"
@@ -63,20 +61,20 @@ class SubforumComponent extends React.Component {
     }
 
     public subscribe = () => {
-        const { 
-            onSetSubscribed, 
-            currentUser, 
-            subforum 
+        const {
+            onSetSubscribed,
+            currentUser,
+            subforum
         }: any = this.props;
         db.doSubscribe(subforum.name, currentUser.uid, currentUser.username)
         onSetSubscribed(true)
     }
 
     public unsubscribe = () => {
-        const { 
-            onSetSubscribed, 
-            currentUser, 
-            subforum 
+        const {
+            onSetSubscribed,
+            currentUser,
+            subforum
         }: any = this.props;
         db.doUnsubscribe(subforum.name, currentUser.uid)
         onSetSubscribed(false)
@@ -137,12 +135,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     onSetSubscribed: (subscribed: any) => dispatch({ type: "SUBFORUM_SET_SUBSCRIBED", subscribed }),
 });
 
-const authCondition = (authUser: any) => !!authUser;
-
-export const Subforum = compose(
-    withAuthorization(authCondition),
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )
+export const Subforum = connect(
+    mapStateToProps,
+    mapDispatchToProps
 )(withRouter(SubforumComponent));
