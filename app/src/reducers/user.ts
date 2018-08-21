@@ -2,7 +2,7 @@ const INITIAL_STATE = {
   authUser: null, // firebase auth()
   currentUser: null, // user db record
   recipient: '', // UID of user
-  notif: '' // notification message
+  notif: '', // notification message
 }
 
 const setAuthUser = (state: any, action: any) => ({

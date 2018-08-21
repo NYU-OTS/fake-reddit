@@ -14,9 +14,6 @@ export class UserList extends React.Component<InterfaceProps, {}> {
 
     return (
       <div>
-        <h2>List of Usernames of Users</h2>
-        <p>(Saved on Sign Up in Firebase Database)</p>
-
         {
           Object.keys(users).map(key => (
             <div key={key}>{users[key]}</div>
