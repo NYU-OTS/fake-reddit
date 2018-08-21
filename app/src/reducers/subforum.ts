@@ -2,6 +2,8 @@ const INITIAL_STATE = {
   mods: {},
   users: {},
   posts: {},
+  subforum: null,
+  subscribed: false
 }
 
 const setModerators = (state: {}, action: any) => ({
@@ -24,6 +26,11 @@ const setSubforum = (state: {}, action: any) => ({
   subforum: action.subforum
 })
 
+const setSubscribed = (state: {}, action: any) => ({
+  ...state,
+  subscribed: action.subscribed
+})
+
 export function subforumReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case "SUBFORUM_SET_USERS": {
@@ -37,6 +44,9 @@ export function subforumReducer(state = INITIAL_STATE, action: any) {
     }
     case "SUBFORUM_SET_SUBFORUM": {
       return setSubforum(state, action)
+    }
+    case "SUBFORUM_SET_SUBSCRIBED": {
+      return setSubscribed(state, action)
     }
     default:
       return state;

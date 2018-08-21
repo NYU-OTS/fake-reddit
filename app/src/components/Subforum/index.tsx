@@ -3,35 +3,29 @@ import { connect } from "react-redux"
 import { withRouter } from 'react-router-dom'
 import { compose } from "recompose"
 import * as routes from '../../constants/routes'
-import { db } from "../../firebase"
+import { auth, db } from "../../firebase"
 import { withAuthorization } from "../Session/withAuthorization"
 import { FormCreatePost } from './FormCreatePost'
 import { PostList } from './PostList'
 import { UserList } from "./UserList"
 
-interface InterfaceProps {
-    currentUser: any;
-}
-
-interface InterfaceState {
-    error: any;
-    subscribed: boolean
-}
-
-class SubforumComponent extends React.Component<
-    InterfaceProps, 
-    InterfaceState
-> {
+class SubforumComponent extends React.Component {
     constructor(props: any) {
         super(props)
         this.state = {
             error: '',
-            subscribed: false
         }
     }
 
     public componentDidMount() {
-        const { onSetUsers, onSetPosts, onSetSubforum, location }: any = this.props;
+        const {
+            onSetUsers,
+            onSetPosts,
+            onSetSubforum,
+            onSetSubscribed,
+            location,
+        }: any = this.props;
+
         const path = location.pathname;
         const prefixLength = routes.SUBFORUM.length + 1;
         const isValidPath =
@@ -40,21 +34,15 @@ class SubforumComponent extends React.Component<
 
         if (isValidPath) {
             const subName = path.substring(prefixLength);
-            const { currentUser } = this.props
 
             db.onceGetSubforumByName(subName).then(snapshot => {
                 if (snapshot.val()) {
-                    onSetSubforum({
+                    const subforum = {
                         ...snapshot.val(),
                         name: subName
-                    })
-                    const subscribed = currentUser 
-                    ? subName in currentUser.subcriptions
-                    : false;
-                    this.setState({
-                        ...this.state,
-                        subscribed
-                    })
+                    }
+                    onSetSubforum(subforum)
+                    onSetSubscribed(!!subforum.users[auth.getuid()])
                 }
             })
 
@@ -74,77 +62,79 @@ class SubforumComponent extends React.Component<
         }
     }
 
-    public subscribe = (
-        subforum: {
-            name: string
-        },
-        currentUser: {
-            uid: string,
-            username: string
-        }
-    ) => {
+    public subscribe = () => {
+        const { 
+            onSetSubscribed, 
+            currentUser, 
+            subforum 
+        }: any = this.props;
         db.doSubscribe(subforum.name, currentUser.uid, currentUser.username)
-        this.setState({ ...this.state, subscribed: true })
+        onSetSubscribed(true)
     }
 
-    public unsubscribe = (
-        subforum: {
-            name: string
-        },
-        currentUser: {
-            uid: string,
-            username: string
-        }
-    ) => {
+    public unsubscribe = () => {
+        const { 
+            onSetSubscribed, 
+            currentUser, 
+            subforum 
+        }: any = this.props;
         db.doUnsubscribe(subforum.name, currentUser.uid)
-        this.setState({ ...this.state, subscribed: false })
+        onSetSubscribed(false)
     }
 
 
     public render() {
-        const { users, posts, subforum, currentUser }: any = this.props;
-        const { subscribed } = this.state;
+        const { users, subscribed, posts, subforum, }: any = this.props;
 
-        const ButtonSubscribe = () => (
-            <button onClick={() => this.subscribe(subforum, currentUser)}>
+        return (subforum
+            ? (
+                <div>
+                    <h1>Posts in {!!subforum && subforum.name}</h1>
+                    {
+                        subscribed ? <this.ButtonUnsubscribe /> : <this.ButtonSubscribe />
+                    }
+                    <h2>Create Post</h2>
+                    <FormCreatePost />
+                    {!!posts && <PostList posts={posts} />}
+                    <h1>Users in {!!subforum && subforum.name}</h1>
+                    {!!users && <UserList users={users} />}
+                </div>
+            ) : (
+                <div><h3>Loading awesomeness...</h3></div>
+            )
+        );
+    }
+
+    private ButtonSubscribe = () => {
+        return (
+            <button onClick={() => this.subscribe()}>
                 Subscribe
             </button>
         )
+    }
 
-        const ButtonUnsubscribe = () => (
-            <button onClick={() => this.unsubscribe(subforum, currentUser)}>
+    private ButtonUnsubscribe = () => {
+        return (
+            <button onClick={() => this.unsubscribe()}>
                 Unsubscribe
             </button>
         )
-
-        return (
-            <div>
-                <h1>Posts in {!!subforum && subforum.name}</h1>
-                {
-                    subscribed ? <ButtonUnsubscribe /> : <ButtonSubscribe />
-                }
-                <h2>Create Post</h2>
-                <FormCreatePost />
-                {!!users && <UserList users={users} />}
-                {!!posts && <PostList posts={posts} />}
-            </div>
-        );
     }
 }
 
 const mapStateToProps = (state: any) => ({
-    mods: state.subforumState.mods,
     users: state.subforumState.users,
     posts: state.subforumState.posts,
     subforum: state.subforumState.subforum,
-    currentUser: state.userState.currentUser
+    currentUser: state.userState.currentUser,
+    subscribed: state.subforumState.subscribed
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onSetCurrentUser: (user: any) => dispatch({ type: "USER_SET_CURRENT_USER", user }),
     onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
     onSetPosts: (posts: any) => dispatch({ type: "SUBFORUM_SET_POSTS", posts }),
     onSetSubforum: (subforum: any) => dispatch({ type: "SUBFORUM_SET_SUBFORUM", subforum }),
+    onSetSubscribed: (subscribed: any) => dispatch({ type: "SUBFORUM_SET_SUBSCRIBED", subscribed }),
 });
 
 const authCondition = (authUser: any) => !!authUser;
