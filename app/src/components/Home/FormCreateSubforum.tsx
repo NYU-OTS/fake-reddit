@@ -1,8 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { compose } from "recompose";
 import { auth, db } from "../../firebase";
-import { withAuthorization } from "../Session/withAuthorization";
 
 interface InterfaceProps {
     currentUser: any;
@@ -98,12 +96,7 @@ export class FormCreateSubforumComponent extends React.Component<
     }
 }
 
-const authCondition = (authUser: any) => !!authUser;
-
-export const FormCreateSubforum = compose(
-    withAuthorization(authCondition),
-    connect(
+export const FormCreateSubforum = connect(
         mapStateToProps,
         mapDispatchToProps
-    )
 )(FormCreateSubforumComponent);

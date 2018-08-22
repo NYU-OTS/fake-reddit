@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import * as routes from '../../constants/routes';
-import { db, firebase } from '../../firebase';
 import { Account } from '../Account';
 import { Home } from '../Home';
 import { Landing } from '../Landing';
@@ -16,29 +15,6 @@ import { Subforum } from '../Subforum';
 class AppComponent extends React.Component {
   constructor(props: any) {
     super(props);
-
-    this.state = {
-      authUser: null,
-      currentUser: null
-    };
-  }
-
-  public componentDidMount() {
-    firebase.auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        db.getUserByUID(authUser.uid).once('value', snapshot => {
-          this.setState({
-            authUser,
-            currentUser: snapshot.val()
-          })
-        })
-      } else {
-        this.setState({
-          authUser: null,
-          currentUser: null
-        })
-      }
-    });
   }
 
   public render() {
@@ -49,13 +25,13 @@ class AppComponent extends React.Component {
           <hr />
           <Switch>
             <Route exact={true} path={routes.LANDING} component={Landing} />
+            <Route path={routes.SUBFORUM + '/:sub'} component={Subforum} />
+            <Route path={routes.POST + '/:post'} component={Post} />
             <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
             <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
             <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
             <Route exact={true} path={routes.HOME} component={Home} />
             <Route exact={true} path={routes.ACCOUNT} component={Account} />
-            <Route exact={true} path={routes.SUBFORUM + '/:sub'} component={Subforum} />
-            <Route exact={true} path={routes.POST + '/:post'} component={Post} />
           </Switch>
         </div>
       </BrowserRouter>

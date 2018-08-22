@@ -2,23 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { db, firebase } from "../../firebase";
 
-interface InterfaceProps {
-  authUser?: any;
-  currentUser?: any;
-}
-
-interface InterfaceState {
-  authUser?: any;
-  currentUser?: any;
-}
-
 export const withAuthentication = (Component: any) => {
-  class WithAuthentication extends React.Component<
-    InterfaceProps,
-    InterfaceState
-    > {
+  class WithAuthentication extends React.Component {
     public componentDidMount() {
-    const { onSetAuthUser, onSetCurrentUser }: any = this.props;
+      const { onSetAuthUser, onSetCurrentUser }: any = this.props;
 
       firebase.auth.onAuthStateChanged(authUser => {
         if (authUser) {
@@ -37,7 +24,7 @@ export const withAuthentication = (Component: any) => {
     }
 
     public render() {
-      return <Component />;
+      return <Component />
     }
   }
 

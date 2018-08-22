@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import * as routes from '../../constants/routes';
 
 interface InterfaceProps {
@@ -21,7 +22,7 @@ export class PostList extends React.Component<InterfaceProps, {}> {
         {
           Object.keys(posts).map(key => (
             <div key={key}>
-              <h4><a href={routes.POST + '/' + key}>{posts[key].subject}</a></h4>
+              <h4><Link to={routes.POST + '/' + key}>{posts[key].subject}</Link></h4>
               <p>{posts[key].poster} | {posts[key].timestamp}</p>
             </div>
           ))

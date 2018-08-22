@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import * as routes from '../../constants/routes';
 import { db } from "../../firebase";
 
@@ -35,9 +36,9 @@ class SubforumListComponent extends React.Component {
                 {
                     Object.keys(subforums).map(key => (
                         <p key={key}>
-                            <a href={routes.SUBFORUM + `/${key}`} key={key}>
+                            <Link to={routes.SUBFORUM + `/${key}`} key={key}>
                                 {key}
-                            </a>
+                            </Link>
                         </p>
                     ))
                 }

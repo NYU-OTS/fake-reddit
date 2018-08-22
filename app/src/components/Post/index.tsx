@@ -20,7 +20,11 @@ class PostComponent extends React.Component {
             path.length > prefixLength;
 
         if (isValidPath) {
-            const postId = path.substring(prefixLength);
+            let postId = path.substring(prefixLength);
+            if (postId.indexOf('/') > 0) {
+                postId = postId.substring(0, postId.indexOf('/'))
+            }
+
 
             db.onceGetPostByID(postId).then(snapshot => {
                 if (snapshot.val()) {

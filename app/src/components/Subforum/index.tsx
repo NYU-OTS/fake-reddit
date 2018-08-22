@@ -32,7 +32,10 @@ class SubforumComponent extends React.Component {
             path.length > prefixLength;
 
         if (isValidPath) {
-            const subName = path.substring(prefixLength);
+            let subName = path.substring(prefixLength);
+            if (subName.indexOf('/') > 0) {
+                subName = subName.substring(0, subName.indexOf('/'))
+            }
 
             db.onceGetSubforumByName(subName).then(snapshot => {
                 if (snapshot.val()) {
@@ -105,16 +108,24 @@ class SubforumComponent extends React.Component {
     }
 
     private ButtonSubscribe = () => {
+        const { currentUser }: any = this.props
         return (
-            <button onClick={() => this.subscribe()}>
+            <button
+                onClick={() => this.subscribe()}
+                disabled={!currentUser}
+            >
                 Subscribe
             </button>
         )
     }
 
     private ButtonUnsubscribe = () => {
+        const { currentUser }: any = this.props
         return (
-            <button onClick={() => this.unsubscribe()}>
+            <button 
+                onClick={() => this.unsubscribe()}
+                disabled={!currentUser}
+            >
                 Unsubscribe
             </button>
         )
