@@ -5,7 +5,6 @@ import { auth } from "../../firebase";
 interface InterfaceProps {
   email?: string;
   error?: any;
-  // history?: any;
   password?: string;
 }
 
@@ -38,15 +37,15 @@ export class SignInForm extends React.Component<
   public onSubmit = (event: any) => {
     const { email, password } = this.state;
 
-    // const { history } = this.props;
-
     auth.doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...SignInForm.INITIAL_STATE });
-        // history.push(routes.HOME);
         window.location.href = routes.HOME
       })
       .catch(error => {
+        if (error.message.includes('undefined')) {
+          window.location.href = routes.HOME
+        }
         this.setState(SignInForm.propKey("error", error));
       });
 
