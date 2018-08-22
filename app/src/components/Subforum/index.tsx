@@ -19,7 +19,6 @@ class SubforumComponent extends React.Component {
     public componentDidMount() {
         const {
             onSetUsers,
-            onSetPosts,
             onSetSubforum,
             onSetSubscribed,
             location,
@@ -46,14 +45,6 @@ class SubforumComponent extends React.Component {
                     onSetSubforum(subforum)
                     onSetSubscribed(!!subforum.users[auth.getuid()])
                 }
-            })
-
-            db.onceGetPostsBySubforum(subName).then(snapshot => {
-                if (snapshot.val()) {
-                    onSetPosts(snapshot.val())
-                }
-            }).catch(error => {
-                console.log(error)
             })
 
             db.onceGetUsersBySubforum(subName).then(snapshot => {
@@ -86,7 +77,7 @@ class SubforumComponent extends React.Component {
 
 
     public render() {
-        const { users, subscribed, posts, subforum, }: any = this.props;
+        const { users, subscribed, subforum, }: any = this.props;
 
         return (subforum
             ? (
@@ -97,7 +88,7 @@ class SubforumComponent extends React.Component {
                     }
                     <h2>Create Post</h2>
                     <FormCreatePost />
-                    {!!posts && <PostList posts={posts} />}
+                    <PostList />
                     <h1>Users in {!!subforum && subforum.name}</h1>
                     {!!users && <UserList users={users} />}
                 </div>
@@ -142,7 +133,6 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
-    onSetPosts: (posts: any) => dispatch({ type: "SUBFORUM_SET_POSTS", posts }),
     onSetSubforum: (subforum: any) => dispatch({ type: "SUBFORUM_SET_SUBFORUM", subforum }),
     onSetSubscribed: (subscribed: any) => dispatch({ type: "SUBFORUM_SET_SUBSCRIBED", subscribed }),
 });
