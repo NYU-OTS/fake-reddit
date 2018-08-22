@@ -25,7 +25,6 @@ class AppComponent extends React.Component {
 
   public componentDidMount() {
     firebase.auth.onAuthStateChanged(authUser => {
-      // TODO: add currentUser to the entire scope
       if (authUser) {
         db.getUserByUID(authUser.uid).once('value', snapshot => {
           this.setState({
