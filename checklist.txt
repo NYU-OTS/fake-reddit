@@ -1,0 +1,31 @@
+Concept Checklist before Actual Work:
+
+[TODO]  Use a Presentational component    
+[OK]    Use React props    
+[OK]    Use a React lifecycle method    
+[OK]    Use react-redux connect to create a container component    
+[OK]    Use the Redux store    
+[OK]    Use mapStateToProps    
+[OK]    Use mapDispatchToProps    
+[TODO]  Use mergeProps    
+[OK]    Pass props from a parent component    
+[OK]    Use React Router    
+[OK?]   Use a route variable using React Router    
+[TODO]  Dispatch an action after an ajax call    
+[OK]    Use an action creator    
+[TODO]  Compose two Redux selectors    
+[OK]    Use React Router to navigate    
+[TODO]  Use Redux Form to save and use form data    
+[TODO]  Use typed props for React components    
+[OK]    Use parameter types and return types for functions    
+[TODO]  Use types with variables    
+[TODO]  Disable implicit and explicit use of any using tslint    
+[TODO]  Disable tslint for a single line of code    
+[OK]    Add a webpack plugin (hot-reloading?)    
+[OK]    Use a TypeScript class    Use and define a TypeScript interface    
+[OK]    Use HTML attributes on React components    Use event handlers on React components    
+
+Bonus
+[TODO]  Use a TypeScript union operator    
+[TODO]  Use the TypeScript intersection operator    
+[TODO]  Create a React component without JSX syntax
