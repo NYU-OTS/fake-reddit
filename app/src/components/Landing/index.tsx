@@ -50,7 +50,7 @@ class LandingComponent extends React.Component<
       onSetSubforums(snapshot.key)
     })
 
-    onShowNotification('Heyyy your attention please...Nevermind!')
+    onShowNotification('Hiiiiiiiiiiiiiiiiiiiiiiiii!')
     onHideNotification()
     this.timeInterval = setInterval(() => {
       this.setState({ time: Date.now() })
@@ -66,10 +66,9 @@ class LandingComponent extends React.Component<
     const { time } = this.state;
     return (
       <div>
-        <h2>Landing Page</h2>
-        <h5>{!!time && time}</h5>
-        <p>{notif}</p>
         <SubforumList />
+        <p>{notif}</p>
+        <h5>{!!time && time}</h5>
       </div>
     )
   }
