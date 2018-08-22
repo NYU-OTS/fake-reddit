@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  subforums: {}
+  subforums: null
 }
 
 const setSubforums = (state: {}, action: any) => ({

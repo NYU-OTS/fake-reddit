@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import * as routes from '../../constants/routes';
-import { Account } from '../Account';
 import { Home } from '../Home';
 import { Landing } from '../Landing';
 import { Navigation } from '../Navigation';
@@ -11,6 +10,7 @@ import { withAuthentication } from '../Session/withAuthentication';
 import { SignIn } from '../SignIn';
 import { SignUp } from '../SignUp';
 import { Subforum } from '../Subforum';
+import { Account } from '../User/Account';
 
 class AppComponent extends React.Component {
   constructor(props: any) {

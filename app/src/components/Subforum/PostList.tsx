@@ -5,19 +5,29 @@ import * as routes from '../../constants/routes';
 import { db } from '../../firebase';
 
 export class PostListComponent extends React.Component {
+  private INITIAL_STATE = {
+    refPosts: null
+  }
+
   constructor(props: any) {
     super(props);
+    this.state = this.INITIAL_STATE
+  }
+
+  public componentWillUnmount() {
+    const { refPosts }: any = this.state
+    this.setState(this.INITIAL_STATE)
+    refPosts.off()
   }
 
   public componentDidMount() {
     const { subforum, onSetPosts }: any = this.props;
-
-    db.onceGetPostsBySubforum(subforum.name).then(snapshot => {
+    const refPosts = db.refPostsBySubforum(subforum.name)
+    this.setState({ ...this.state, refPosts })
+    refPosts.on('value', (snapshot: any) => {
       if (snapshot.val()) {
         onSetPosts(snapshot.val())
       }
-    }).catch(error => {
-      console.log(error)
     })
   }
 
@@ -26,7 +36,7 @@ export class PostListComponent extends React.Component {
 
     return (
       <div>
-        <h2>List of Posts on this Subforum</h2>
+        <h2>Posts in this Subforum</h2>
         <hr />
         {
           posts

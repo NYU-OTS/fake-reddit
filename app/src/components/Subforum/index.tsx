@@ -9,11 +9,20 @@ import { PostList } from './PostList'
 import { UserList } from "./UserList"
 
 class SubforumComponent extends React.Component {
+    private INITIAL_STATE = {
+        error: '',
+        refSubforum: null
+    }
+
     constructor(props: any) {
         super(props)
-        this.state = {
-            error: '',
-        }
+        this.state = this.INITIAL_STATE
+    }
+
+    public componentWillUnmount() {
+        const { refSubforum }: any = this.state;
+        this.setState(this.INITIAL_STATE);
+        refSubforum.off()
     }
 
     public componentDidMount() {
@@ -36,20 +45,20 @@ class SubforumComponent extends React.Component {
                 subName = subName.substring(0, subName.indexOf('/'))
             }
 
-            db.onceGetSubforumByName(subName).then(snapshot => {
+            const refSubforum = db.refSubforum(subName)
+            this.setState({ ...this.state, refSubforum })
+            refSubforum.on('value', (snapshot: any) => {
                 if (snapshot.val()) {
                     const subforum = {
                         ...snapshot.val(),
                         name: subName
                     }
                     onSetSubforum(subforum)
-                    onSetSubscribed(!!subforum.users[auth.getuid()])
-                }
-            })
-
-            db.onceGetUsersBySubforum(subName).then(snapshot => {
-                if (snapshot.val()) {
-                    onSetUsers(snapshot.val())
+                    onSetUsers(subforum.users)
+                    onSetSubscribed(!!subforum.users
+                        ? !!subforum.users[auth.getuid()]
+                        : false
+                    )
                 }
             })
         }
@@ -113,7 +122,7 @@ class SubforumComponent extends React.Component {
     private ButtonUnsubscribe = () => {
         const { currentUser }: any = this.props
         return (
-            <button 
+            <button
                 onClick={() => this.unsubscribe()}
                 disabled={!currentUser}
             >

@@ -286,7 +286,7 @@ export const onceGetSubforums = () =>
 /*
  * Grab the list of posts in a subforum once
  */
-export const onceGetPosts = () => 
+export const onceGetPosts = () =>
   db.ref(`${R_SUBFORUMS}/${R_POSTS}`).once('value')
 
 /*
@@ -295,13 +295,20 @@ export const onceGetPosts = () =>
  * @param recipient: recipient's UID
  */
 export const onceGetMessages = (
-  sender: string, 
+  sender: string,
   recipient: string
 ) =>
   db.ref(`${R_USERS}/${sender}/${F_DM}/${recipient}`).once('value')
 
 export const refMessages = (
-  sender: string, 
+  sender: string,
   recipient: string
-) =>
-  db.ref(`${R_USERS}/${sender}/${F_DM}/${recipient}`)
+) => db.ref(`${R_USERS}/${sender}/${F_DM}/${recipient}`)
+
+export const refUsers = () => db.ref(`${R_USERS}`)
+export const refSubforums = () => db.ref(`${R_SUBFORUMS}`)
+export const refPosts = () => db.ref(`${R_POSTS}`)
+export const refPostsBySubforum = (subName: string) => 
+  db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}`)
+export const refSubforum = (name: string) => 
+  db.ref(`${R_SUBFORUMS}/${name}`)

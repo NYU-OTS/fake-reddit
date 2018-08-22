@@ -14,16 +14,60 @@ const mapDispatchToProps = (dispatch: any) => ({
   onSetMessages: (messages: any) => dispatch({ type: 'USER_SET_MESSAGES', messages }),
 });
 
-class UserListComponent extends React.Component {
+interface InterfaceState {
+  refMessages: any;
+  refUsers: any;
+}
+
+class UserListComponent extends React.Component<{}, InterfaceState> {
   constructor(props: any) {
     super(props);
+
+    this.state = {
+      refMessages: null,
+      refUsers: null
+    }
   }
+
 
   public componentDidMount() {
     const { onSetUsers }: any = this.props;
-    db.onceGetUsers().then(snapshot => {
+
+    const refUsers = db.refUsers()
+
+    this.setState({
+      ...this.state,
+      refUsers
+    })
+
+    refUsers.on('value', (snapshot: any) => {
       onSetUsers(snapshot.val());
     })
+  }
+
+  public componentWillUnmount() {
+    const {
+      onSetUsers,
+      onSetRecipient,
+      onSetMessages
+    }: any = this.props;
+
+    const {
+      refMessages,
+      refUsers
+    } = this.state;
+
+    if (refUsers) {
+      refUsers.off()
+    }
+
+    if (refMessages) {
+      refMessages.off()
+    }
+
+    onSetUsers(null)
+    onSetRecipient(null)
+    onSetMessages(null)
   }
 
   public showMessages = (key: string) => {
@@ -41,20 +85,24 @@ class UserListComponent extends React.Component {
     onSetRecipient(recipient)
 
     if (recipient && currentUser) {
-      // db.onceGetMessages(currentUser.uid, recipient.uid)
-      //   .then(snapshot => {
-      db.refMessages(currentUser.uid, recipient.uid)
-        .on('value', (snapshot: any) => {
-          if (snapshot.val()) {
-            onSetMessages({
-              dm: { ...snapshot.val(), },
-              uid: snapshot.key,
-              username: recipient.username
-            })
-          } else {
-            onSetMessages(null)
-          }
-        })
+      const refMessages = db.refMessages(currentUser.uid, recipient.uid)
+
+      this.setState({
+        ...this.state,
+        refMessages
+      })
+
+      refMessages.on('value', (snapshot: any) => {
+        if (snapshot.val()) {
+          onSetMessages({
+            dm: { ...snapshot.val(), },
+            uid: snapshot.key,
+            username: recipient.username
+          })
+        } else {
+          onSetMessages(null)
+        }
+      })
     }
   }
 

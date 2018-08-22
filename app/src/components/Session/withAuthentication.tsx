@@ -4,23 +4,37 @@ import { db, firebase } from "../../firebase";
 
 export const withAuthentication = (Component: any) => {
   class WithAuthentication extends React.Component {
+    constructor(props: any) {
+      super(props)
+      this.state = {
+        refUsers: null
+      }
+    }
     public componentDidMount() {
       const { onSetAuthUser, onSetCurrentUser }: any = this.props;
 
-      firebase.auth.onAuthStateChanged(authUser => {
-        if (authUser) {
-          db.onceGetUserByUID(authUser.uid).then(snapshot => {
+      const refUsers = db.refUsers()
+      this.setState({ refUsers: db.refUsers })
+
+      firebase.auth.onAuthStateChanged((authUser: any) => {
+        refUsers.child(authUser.uid).on('value', (snapshot: any) => {
+          if (authUser) {
             onSetAuthUser(authUser)
             onSetCurrentUser({
               ...snapshot.val(),
               uid: authUser.uid
             })
-          })
-        } else {
-          onSetAuthUser(null)
-          onSetCurrentUser(null)
-        }
-      });
+          } else {
+            onSetAuthUser(null)
+            onSetCurrentUser(null)
+          }
+        });
+      })
+    }
+
+    public componentWillUnmount() {
+      const { refUsers }: any = this.state
+      refUsers.off()
     }
 
     public render() {
