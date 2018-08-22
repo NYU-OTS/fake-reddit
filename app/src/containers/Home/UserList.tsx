@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { UserList } from "../../components/Home/UserList";
 import { db } from '../../firebase';
 
 const mapStateToProps = (state: any) => ({
@@ -19,7 +20,7 @@ interface InterfaceState {
   refUsers: any;
 }
 
-class UserListComponent extends React.Component<{}, InterfaceState> {
+class UserListContainer extends React.Component<{}, InterfaceState> {
   constructor(props: any) {
     super(props);
 
@@ -107,37 +108,17 @@ class UserListComponent extends React.Component<{}, InterfaceState> {
   }
 
   public render() {
-    const { users }: any = this.props;
-
-    return (
-      users
-        ? (
-          <div>
-            <h2>All Users (because who needs privacy)</h2>
-            {
-              Object.keys(users).map(key => (
-                <div key={key}>{users[key].username}
-                  <span> | </span>
-                  <a
-                    href='#'
-                    key={key}
-                    onClick={() => this.showMessages(key)}
-                  >
-                    Message
-            </a>
-                </div>
-              ))
-            }
-          </div>
-        )
-        : (
-          <div>Loading users...</div>
-        )
-    );
+    const { users, recipient, currentUser }: any = this.props;
+    return React.createElement(UserList, {
+      users,
+      recipient,
+      currentUser,
+      showMessages: this.showMessages
+    })
   }
 }
 
-export const UserList = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserListComponent);
+)(UserListContainer);

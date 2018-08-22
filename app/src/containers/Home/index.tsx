@@ -1,52 +1,25 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { UserList } from "../Forum/UserList";
+import { Home } from '../../components/Home/Home'
 import { withAuthorization } from "../Session/withAuthorization";
-import { FormCreateSubforum } from './FormCreateSubforum';
-import './index.css';
-import { MessageList } from "./MessageList";
 
-class HomeComponent extends React.Component {
+class HomeContainer extends React.Component {
   public render() {
     const { currentUser }: any = this.props;
-    return (
-      currentUser
-        ? (
-          <div>
-            <div className="split left">
-              <h1>Home</h1>
-              <UserList />
-              <h2>Create Subforums</h2>
-              <FormCreateSubforum />
-            </div>
-
-            <div className="split right">
-              <MessageList />
-            </div>
-          </div>
-        )
-        : (
-          <div>Loading...</div>
-        )
-    );
+    return React.createElement(Home, { currentUser })
   }
 }
 
 const mapStateToProps = (state: any) => ({
-  currentUser: state.userState.currentUser
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  onSetUsers: (users: any) => dispatch({ type: "SUBFORUM_SET_USERS", users }),
+  currentUser: state.userState.currentUser,
 });
 
 const authCondition = (authUser: any) => !!authUser;
 
-export const Home = compose(
+export default compose(
   withAuthorization(authCondition),
   connect(
     mapStateToProps,
-    mapDispatchToProps
   )
-)(HomeComponent);
+)(HomeContainer);
