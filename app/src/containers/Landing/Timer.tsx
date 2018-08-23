@@ -1,10 +1,12 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
+import { Timer } from '../../components/Landing/Timer'
 
 interface IState {
-    timeNow: number;
+    timeNow: any;
 }
 
-export class Timer extends React.Component<{}, IState> {
+class TimerContainer extends React.Component<{}, IState> {
     private timeInterval: NodeJS.Timer;
     private INITIAL_STATE = {
         timeNow: 0
@@ -28,6 +30,8 @@ export class Timer extends React.Component<{}, IState> {
 
     public render() {
         const { timeNow } = this.state;
-        return <h5>{!!timeNow && timeNow}</h5>
+        return React.createElement(Timer, { timeNow })
     }
 }
+
+export default connect(null, null)(TimerContainer)

@@ -5,6 +5,7 @@ export const R_USERNAMES = 'usernames'
 export const R_EMAILS = 'emails'
 export const R_POSTS = 'posts'
 export const R_SUBFORUMS = 'subforums'
+export const R_COMMENTS = 'comments'
 
 export const F_SUBSCRIPTIONS = 'subscriptions'
 export const F_DM = 'dm'
@@ -12,7 +13,6 @@ export const F_MOD_OF = 'modOf'
 export const F_OWNER_OF = 'ownerOf'
 export const F_USERNAME = 'username'
 export const F_KEYS = 'keys'
-export const F_COMMENTS = 'comments'
 export const F_OWNER = 'owner'
 
 export const ROLE_USER = 'user'
@@ -44,17 +44,17 @@ export const doCreateUser = (
 /*
  * Creates a comment in a post
  * @param postKey: key of post
- * @param username: username of user
+ * @param poster: username of user
  * @param content: comment content
  */
 export const doCreateComment = (
   postKey: string,
-  username: string,
+  poster: string,
   content: string,
 ) => {
   const timestamp = Date.now()
-  return db.ref(`${R_POSTS}/${F_KEYS}/${postKey}/${F_COMMENTS}`)
-    .push({ content, poster: username, timestamp })
+  return db.ref(`${R_COMMENTS}/${postKey}`)
+    .push({ content, poster, timestamp })
 }
 
 /*
@@ -65,7 +65,7 @@ export const doCreateComment = (
 export const doDeleteComment = (
   postKey: string,
   commentKey: string
-) => db.ref(`${R_POSTS}/${F_KEYS}/${postKey}/${F_COMMENTS}/${commentKey}`).remove()
+) => db.ref(`${R_COMMENTS}/${postKey}/${commentKey}`).remove()
 
 /*
  * Creates a post record in database
@@ -260,7 +260,7 @@ export const onceGetPostsByUser = (uid: string) =>
  * @param key: ID of post
  */
 export const onceGetCommentsByPost = (key: string) =>
-  db.ref(`${R_POSTS}/${F_KEYS}/${key}/${F_COMMENTS}`).once('value')
+  db.ref(`${R_COMMENTS}/${key}`).once('value')
 
 /*
  * Grab post information by ID
@@ -308,7 +308,8 @@ export const refMessages = (
 export const refUsers = () => db.ref(`${R_USERS}`)
 export const refSubforums = () => db.ref(`${R_SUBFORUMS}`)
 export const refPosts = () => db.ref(`${R_POSTS}`)
-export const refPostsBySubforum = (subName: string) => 
+export const refPostsBySubforum = (subName: string) =>
   db.ref(`${R_POSTS}/${R_SUBFORUMS}/${subName}`)
-export const refSubforum = (name: string) => 
+export const refSubforum = (name: string) =>
   db.ref(`${R_SUBFORUMS}/${name}`)
+export const refComments = () => db.ref(`${R_COMMENTS}`)

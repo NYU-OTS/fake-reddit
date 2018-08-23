@@ -4,12 +4,13 @@ import MessageList from "../../containers/Home/MessageList";
 import UserList from "../../containers/Home/UserList";
 import './home.css';
 
-export class Home extends React.Component {
-    constructor(props: any) {
-        super(props)
-    }
+interface IProps {
+    currentUser: {};
+}
+
+export class Home extends React.Component<IProps> {
     public render() {
-        const { currentUser, recipient, messages }: any = this.props;
+        const { currentUser } = this.props;
         return (
             currentUser ? (
                 <div>
@@ -21,11 +22,7 @@ export class Home extends React.Component {
                     </div>
 
                     <div className="split right">
-                        {
-                            React.createElement(MessageList, {
-                                currentUser, recipient, messages
-                            })
-                        }
+                        <MessageList />
                     </div>
                 </div>
             ) : (<div>Loading...</div>)

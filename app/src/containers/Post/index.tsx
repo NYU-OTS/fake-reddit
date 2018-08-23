@@ -1,18 +1,28 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { withRouter } from 'react-router-dom'
+import { Post } from "../../components/Post";
 import * as routes from '../../constants/routes'
 import { db } from "../../firebase"
-import { CommentList } from './CommentList'
-import { FormCreateComment } from './FormCreateComment'
 
-class PostComponent extends React.Component {
+interface IProps {
+    post: {
+        subject: string;
+        content: string;
+    }
+}
+
+class PostContainer extends React.Component<IProps> {
     constructor(props: any) {
         super(props)
     }
 
     public componentDidMount() {
-        const { onSetPost, location }: any = this.props;
+        const {
+            onSetPost,
+            onSetComments,
+            location
+        }: any = this.props;
         const path = location.pathname;
         const prefixLength = routes.POST.length + 1;
         const isValidPath =
@@ -25,37 +35,26 @@ class PostComponent extends React.Component {
                 postId = postId.substring(0, postId.indexOf('/'))
             }
 
-
             db.onceGetPostByID(postId).then(snapshot => {
                 if (snapshot.val()) {
-                    onSetPost({
-                        ...snapshot.val(),
-                        key: postId
-                    })
+                    const post = { ...snapshot.val(), key: postId }
+                    onSetPost(post)
+                    const refComments = db.refComments()
+                    this.setState({ ...this.state, refComments })
+                    refComments.child(post.key).on(
+                        'value',
+                        (commentsSnapshot: any) => {
+                            onSetComments(commentsSnapshot.val());
+                        }
+                    )
                 }
             })
         }
     }
 
     public render() {
-        const { post }: any = this.props;
-        const comments = post.comments;
-
-        return (post 
-            ? (
-            <div>
-                <h3>{ post.subject }</h3>
-                <p>{ post.content }</p>
-                <h2>Comment</h2>
-                <FormCreateComment />
-                {!!comments && <CommentList comments={comments} />}
-            </div>
-            ) : (
-            <div>
-                <h3>Loading brain power...</h3>
-            </div>
-            )
-        );
+        const { post } = this.props;
+        return React.createElement(Post, { post })
     }
 }
 
@@ -66,9 +65,12 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSetPost: (post: any) => dispatch({ type: "POST_SET_POST", post }),
+    async onSetComments(comments: any) {
+        return await dispatch({ type: 'POST_SET_COMMENTS', comments })
+    }
 });
 
-export const Post = connect(
-        mapStateToProps,
-        mapDispatchToProps
-)(withRouter(PostComponent))
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(PostContainer))

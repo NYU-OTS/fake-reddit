@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
-    post: {},
-    comments: {}
+    post: null,
+    comments: null
 }
 
 const setPost = (state: {}, action: any) => ({
@@ -8,10 +8,18 @@ const setPost = (state: {}, action: any) => ({
     post: action.post
 })
 
+const setComments = (state: {}, action: any) => ({
+    ...state,
+    comments: action.comments
+})
+
 export function postReducer(state = INITIAL_STATE, action: any) {
     switch (action.type) {
         case "POST_SET_POST": {
             return setPost(state, action)
+        }
+        case "POST_SET_COMMENTS": {
+            return setComments(state, action)
         }
         default:
             return state;

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Navigation } from '../../components/Navigation';
 import * as routes from '../../constants/routes';
 import Home from '../Home';
 import Landing from '../Landing';
-import { Navigation } from '../Navigation';
 import { PasswordForget } from '../PasswordForget';
-import { Post } from '../Post';
+import Post from '../Post';
 import { withAuthentication } from '../Session/withAuthentication';
 import { SignIn } from '../SignIn';
 import { SignUp } from '../SignUp';

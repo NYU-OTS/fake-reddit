@@ -1,18 +1,15 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Landing } from '../../components/Landing/Landing'
-import { db } from "../../firebase";
+import { Landing } from '../../components/Landing'
 
 interface IProps {
   onSetSubforums: any;
   onShowNotification: any;
   onHideNotification: any;
   notif: string;
-  subforums: {};
 }
 
 const mapStateToProps = (state: any) => ({
-  subforums: state.forumState.subforums,
   notif: state.userState.notif,
 });
 
@@ -24,9 +21,6 @@ const mapDispatchToProps = (dispatch: any) => ({
     setTimeout(() => {
       return dispatch({ type: "HIDE_NOTIFICATION" })
     }, 5000)
-  },
-  async onSetSubforums(subforums: any) {
-    await dispatch({ type: 'FORUM_SET_SUBFORUMS', subforums })
   }
 });
 
@@ -37,23 +31,17 @@ class LandingComponent extends React.Component<IProps, {}> {
 
   public componentDidMount() {
     const {
-      onSetSubforums,
       onShowNotification,
       onHideNotification,
     } = this.props
-
-    // FIXME: Changing from once() to on() breaks the object
-    db.onceGetSubforums().then(snapshot => {
-      onSetSubforums(snapshot.val())
-    })
 
     onShowNotification('Hiiiiiiiiiiiiiiiiiiiiiiiii!')
     onHideNotification()
   }
 
   public render() {
-    const { subforums, notif } = this.props
-    return React.createElement(Landing, { subforums, notif })
+    const { notif } = this.props
+    return React.createElement(Landing, { notif })
   }
 }
 

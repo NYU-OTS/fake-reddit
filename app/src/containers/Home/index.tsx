@@ -1,12 +1,19 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { Home } from '../../components/Home/Home'
+import { Home } from '../../components/Home'
 import { withAuthorization } from "../Session/withAuthorization";
 
-class HomeContainer extends React.Component {
+interface IProps {
+  currentUser: {};
+}
+
+class HomeContainer extends React.Component<IProps> {
+  constructor(props: any) {
+    super(props)
+  }
   public render() {
-    const { currentUser }: any = this.props;
+    const { currentUser } = this.props;
     return React.createElement(Home, { currentUser })
   }
 }

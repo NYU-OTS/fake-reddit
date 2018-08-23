@@ -15,7 +15,6 @@ class MessageListComponent extends React.Component {
 
   public render() {
     const { messages, currentUser, recipient }: any = this.props;
-
     return React.createElement(MessageList, {
       messages, currentUser, recipient
     })

@@ -1,31 +1,28 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { CommentList } from "../../components/Post/CommentList";
 
-interface InterfaceProps {
-  comments?: any;
-}
+class CommentListContainer extends React.Component {
+  private INITIAL_STATE = {
+    refComments: null
+  }
 
-export class CommentList extends React.Component<InterfaceProps, {}> {
   constructor(props: any) {
     super(props);
+    this.state = this.INITIAL_STATE
   }
 
   public render() {
     const { comments }: any = this.props;
-
-    return (
-      <div>
-        <h2>Comments on this Post</h2>
-        <hr />
-        {
-          Object.keys(comments).map(key => (
-            <div key={key}>
-              <p>{comments[key].poster} | {comments[key].timestamp}</p>
-              <p>{comments[key].content}</p>
-              <hr />
-            </div>
-          ))
-        }
-      </div>
-    );
+    return React.createElement(CommentList, comments)
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  post: state.postState.post,
+  comments: state.postState.comments
+});
+
+export default connect(
+  mapStateToProps,
+)(CommentListContainer)
