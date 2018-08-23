@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormCreateSubforum } from "../../containers/Home/FormCreateSubforum";
+import FormCreateSubforum from "../../containers/Home/FormCreateSubforum";
 import MessageList from "../../containers/Home/MessageList";
 import UserList from "../../containers/Home/UserList";
 import './home.css';

@@ -21,7 +21,8 @@ export function postReducer(state = INITIAL_STATE, action: any) {
         case "POST_SET_COMMENTS": {
             return setComments(state, action)
         }
-        default:
-            return state;
+        default: {
+            return state
+        }
     }
 }

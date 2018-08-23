@@ -21,7 +21,8 @@ export function forumReducer(state = INITIAL_STATE, action: any) {
     case "FORUM_SET_USERS": {
       return setUsers(state, action)
     }
-    default:
+    default: {
       return state;
+    }
   }
 }

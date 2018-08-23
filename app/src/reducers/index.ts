@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 import { adminReducer } from './admin'
 import { forumReducer } from './forum'
 import { messageReducer } from './message'
 import { postReducer } from './post'
 import { subforumReducer } from './subforum'
-import { userReducer } from "./user"
+import { userReducer } from './user'
 
 export const rootReducer = combineReducers({
   subforumState: subforumReducer,
@@ -12,5 +13,8 @@ export const rootReducer = combineReducers({
   forumState: forumReducer,
   postState: postReducer,
   adminState: adminReducer,
-  messageState: messageReducer
+  messageState: messageReducer,
+
+  // special treatment (form-redux)
+  form: formReducer
 })

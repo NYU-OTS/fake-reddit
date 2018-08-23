@@ -1,26 +1,29 @@
-import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-
-import { PasswordChangeForm } from "../PasswordChange";
-import { PasswordForgetForm } from "../PasswordForget/PasswordForgetForm";
 import { withAuthorization } from "../Session/withAuthorization";
+import * as React from "react"; // tslint:disable-line
+import { Account } from "../../components/User/Account";
 
-const AccountComponent = ({ authUser }: any) => (
-  <div>
-    <h1>Account: {authUser.email}</h1>
-    <PasswordForgetForm />
-    <PasswordChangeForm />
-  </div>
-);
+interface IAuthProps {
+  authUser: { email: string } | null
+}
 
-const mapStateToProps = (state: any) => ({
+class AccountContainer extends React.Component<IAuthProps> {
+  public render() {
+    const { authUser } = this.props;
+    return React.createElement(Account, authUser)
+  }
+}
+
+const mapStateToProps = (state: {
+  userState: IAuthProps
+}) => ({
   authUser: state.userState.authUser
 });
 
-const authCondition = (authUser: any) => !!authUser;
+const authCondition = (authUser: {} | null) => !!authUser;
 
-export const Account = compose(
+export default compose(
   withAuthorization(authCondition),
   connect(mapStateToProps)
-)(AccountComponent);
+)(AccountContainer);

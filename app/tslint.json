@@ -17,7 +17,7 @@
     "no-console": false,
     "no-unused-variable": false,
     "no-unused-expression": false,
-    "object-literal-sort-keys": false,
-    "forin": false
+    "object-literal-sort-keys": false
+    // "no-any": true
   }
 }

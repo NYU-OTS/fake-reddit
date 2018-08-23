@@ -1,31 +1,38 @@
-Concept Checklist before Actual Work:
+# Concept Checklist before Actual Work:
 
-[TODO]  Use a Presentational component    
-[OK]    Use React props    
-[OK]    Use a React lifecycle method    
-[OK]    Use react-redux connect to create a container component    
-[OK]    Use the Redux store    
-[OK]    Use mapStateToProps    
-[OK]    Use mapDispatchToProps    
-[TODO]  Use mergeProps    
-[OK]    Pass props from a parent component    
-[OK]    Use React Router    
-[OK?]   Use a route variable using React Router    
-[TODO]  Dispatch an action after an ajax call    
-[OK]    Use an action creator    
-[TODO]  Compose two Redux selectors    
-[OK]    Use React Router to navigate    
-[TODO]  Use Redux Form to save and use form data    
-[TODO]  Use typed props for React components    
-[OK]    Use parameter types and return types for functions    
-[TODO]  Use types with variables    
-[TODO]  Disable implicit and explicit use of any using tslint    
-[TODO]  Disable tslint for a single line of code    
-[OK]    Add a webpack plugin (hot-reloading?)    
-[OK]    Use a TypeScript class    Use and define a TypeScript interface    
-[OK]    Use HTML attributes on React components    Use event handlers on React components    
+
+Status      Task                                                        Prove
+[OK]        Use a Presentational component                              src/components/*
+[OK]        Use React props                                             src/containers/*
+[OK]        Use a React lifecycle method                                src/containers/*
+[OK]        Use react-redux connect to create a container component     src/containers/*
+[OK]        Use the Redux store                                         src/store/
+[OK]        Use mapStateToProps                                         src/containers/*
+[OK]        Use mapDispatchToProps                                      src/containers/*
+[TODO]      Use mergeProps                                              null
+[OK]        Pass props from a parent component                          app/src/components/*
+[OK]        Use React Router                                            app/src/containers/App/index.tsx
+[OK?]       Use a route variable using React Router                     app/src/containers/App/index.tsx
+[OK?]       Dispatch an action after an ajax call                       app/src/containers/*
+[OK]        Use an action creator                                       app/src/reducers/*
+[OK?]       Compose two Redux selectors                                 app/src/selectors/*
+[OK]        Use React Router to navigate                                app/src/components/Navigation/index.tsx
+[TODO]      Use Redux Form to save and use form data                    null
+[OK]        Use typed props for React components                        app/src/*
+[OK?]       Use parameter types and return types for functions          app/src/containers/*
+[OK]        Use types with variables                                    app/src/containers/*
+[OK]        Disable implicit and explicit use of any using tslint       app/tslint.json
+[OK]        Disable tslint for a single line of code                    app/src/containers/User/Account.tsx
+[OK]        Add a webpack plugin (hot-reloading?)                       null
+[OK]        Use a TypeScript class                                      app/src/containers/*
+[OK]        Use and define a TypeScript interface                       app/src/components/*
+[OK]        Use HTML attributes on React components                     app/src/components/Home/index.tsx
+[OK]        Use event handlers on React componentsZ                     app/src/components/SignOut/index.tsx
 
 Bonus
-[TODO]  Use a TypeScript union operator    
-[TODO]  Use the TypeScript intersection operator    
-[TODO]  Create a React component without JSX syntax
+[OK]        Use a TypeScript union operator                             app/src/containers/User/Account.tsx
+[TODO]      Use the TypeScript intersection operator                    null
+[OK]        Create a React component without JSX syntax                 app/src/containers/*
+
+Notes
+* "?" == Not sure if completed

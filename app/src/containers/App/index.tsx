@@ -10,7 +10,7 @@ import { withAuthentication } from '../Session/withAuthentication';
 import { SignIn } from '../SignIn';
 import { SignUp } from '../SignUp';
 import { Subforum } from '../Subforum';
-import { Account } from '../User/Account';
+import Account from '../User/Account';
 
 class AppComponent extends React.Component {
   constructor(props: any) {
