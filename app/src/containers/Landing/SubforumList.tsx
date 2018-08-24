@@ -14,20 +14,35 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 class SubforumListContainer extends React.Component {
+    private INITIAL_STATE = {
+        refSubforums: null
+    }
+
     constructor(props: any) {
         super(props);
+        this.state = this.INITIAL_STATE
     }
 
     public componentDidMount() {
         const { onSetSubforums }: any = this.props;
-
-        db.onceGetSubforums().then(snapshot => {
-            onSetSubforums(snapshot.val())
+        const refSubforums = db.refSubforums()
+        this.setState({ ...this.state, refSubforums })
+        refSubforums.on('value', (snapshot: any) => {
+            const names = {};
+            snapshot.forEach((child: any) => {
+                names[child.key] = child.key
+            })
+            onSetSubforums(names)
         })
     }
 
     public componentWillUnmount() {
         const { onSetSubforums }: any = this.props;
+        const { refSubforums }: any = this.state;
+        if (refSubforums) {
+            refSubforums.off()
+        }
+        this.setState(this.INITIAL_STATE)
         onSetSubforums(null)
     }
 

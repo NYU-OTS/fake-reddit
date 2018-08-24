@@ -1,40 +1,66 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
+const required = (value: {}) => value ? null : 'Required'
+
+const renderField = ({
+    input, label, type,
+    placeholder,
+    meta: {
+        touched,
+        error,
+        warning
+    }
+}: any) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <input {...input} placeholder={placeholder} type={type} />
+                {
+                    touched &&
+                    (
+                        (error && <span>{error}</span>) ||
+                        (warning && <span>{warning}</span>)
+                    )
+                }
+            </div>
+        </div>
+    )
+
 export const FormCreateSubforum = reduxForm({
-    form: 'form-create-sub'
+    form: 'form-create-sub',
 })((props: any) => {
     const {
-        error,
-        name,
-        description,
+        submitting,
         handleSubmit,
-        handleChange
+        // handleChange
     } = props
-
-    const isInvalid = name === '' || description === '';
 
     return (
         <form onSubmit={handleSubmit}>
             <Field
                 name='name'
-                component='input'
+                component={renderField}
                 type='text'
+                validate={required}
                 placeholder='Give it a name'
-                onChange={handleChange}
+                // onChange={handleChange}
+                label='Subforum Name'
             />
             <br />
             <Field
                 name='description'
-                component='textarea'
-                rows={4}
-                placeholder='Enter your description here...'
-                onChange={handleChange}
+                component={renderField}
+                type='text'
+                label='Description'
+                placeholder='Description goes here...'
+                // onChange={handleChange}
+                validate={required}
             />
-            <button disabled={isInvalid} type='submit'>
+            <br />
+            <button disabled={submitting} type='submit'>
                 Create
             </button>
-            {error && <p>{error.message}</p>}
         </form>
     );
 })
