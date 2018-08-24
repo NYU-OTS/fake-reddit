@@ -35,4 +35,4 @@ Bonus
 [OK]        Create a React component without JSX syntax                 app/src/containers/*
 
 Notes
-* "?" == Not sure if completed
+* "?" == Understand what it is, but didn't find a use for it in code
