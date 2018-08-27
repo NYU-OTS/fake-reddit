@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { Home } from '../../components/Home'
+import { Home } from '../../components/Home/Home'
 import { withAuthorization } from "../Session/withAuthorization";
 
 interface IProps {

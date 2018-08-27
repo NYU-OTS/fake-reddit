@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as routes from "../../constants/routes";
-import { SignOutButton } from "../SignOut";
+import { SignOutButton } from "../SignOut/SignOut";
 
 const NavigationComponent = ({ authUser }: any) => (
   <nav className='navbar navbar-expand-lg navbar-light bg-light'>

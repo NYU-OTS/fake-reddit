@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
-import Home from "./containers/Home/index";
+import Home from "./containers/Home/Home";
 import store from "./store";
 
 it("renders without crashing", () => {

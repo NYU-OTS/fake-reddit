@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Landing } from '../../components/Landing'
+import { Landing } from '../../components/Landing/Landing'
 
 interface IProps {
   onSetSubforums: any;

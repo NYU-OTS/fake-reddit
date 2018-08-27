@@ -17,16 +17,20 @@ export class UserList extends React.Component<IProps> {
         return (
             users ? (
                 <div>
-                    <h2>All Users (because who needs privacy)</h2>
+                    <h2>All Users</h2>
                     {
-                        Object.keys(users).map(key => (
-                            <div key={key}>{users[key].username}
-                                <span> | </span>
-                                <button onClick={() => showMessages(key)}>
-                                    Message
-                                </button>
-                            </div>
-                        ))
+                        Object.keys(users).map(key => {
+                            return (
+                                <div key={key} className='row'>
+                                    <div className="col-sm">{users[key].username}</div>
+                                    <div className="col-sm">
+                                        <button onClick={() => showMessages(key)} className='btn btn-link p-0'>
+                                            Message
+                                    </button>
+                                    </div>
+                                </div>
+                            )
+                        })
                     }
                 </div>
             )

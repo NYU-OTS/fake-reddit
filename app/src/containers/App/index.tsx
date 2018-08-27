@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Navigation } from '../../components/Navigation';
+import { Navigation } from '../../components/Navigation/Navigation';
 import * as routes from '../../constants/routes';
-import Home from '../Home';
-import Landing from '../Landing';
-import { PasswordForget } from '../PasswordForget';
-import Post from '../Post';
+import Home from '../Home/Home';
+import Landing from '../Landing/Landing';
+import { PasswordForget } from '../PasswordForget/PasswordForget';
+import Post from '../Post/Post';
 import { withAuthentication } from '../Session/withAuthentication';
-import { SignIn } from '../SignIn';
-import { SignUp } from '../SignUp';
-import { Subforum } from '../Subforum';
+import { SignIn } from '../SignIn/SignIn';
+import { SignUp } from '../SignUp/SignUp';
+import { Subforum } from '../Subforum/Subforum';
 import Account from '../User/Account';
 
 class AppComponent extends React.Component {
@@ -22,7 +22,6 @@ class AppComponent extends React.Component {
       <BrowserRouter>
         <div>
           <Navigation />
-          <hr />
           <Switch>
             <div className="container">
               <Route exact={true} path={routes.LANDING} component={Landing} />

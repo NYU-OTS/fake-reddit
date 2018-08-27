@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PasswordChangeForm } from "../../containers/PasswordChange";
+import { PasswordChangeForm } from "../../containers/PasswordChange/PasswordChange";
 import { PasswordForgetForm } from "../../containers/PasswordForget/PasswordForgetForm";
 
 export const Account = (authUser: { email: string } | null) => (
