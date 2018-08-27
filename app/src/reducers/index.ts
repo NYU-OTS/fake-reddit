@@ -15,6 +15,6 @@ export const rootReducer = combineReducers({
   adminState: adminReducer,
   messageState: messageReducer,
 
-  // special treatment (form-redux)
+  // special treatment (redux-form)
   form: formReducer
 })
