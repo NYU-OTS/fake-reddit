@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from 'react-router-dom';
 import { auth } from "../../firebase";
 
 const signout = () => {
@@ -7,7 +8,7 @@ const signout = () => {
 }
 
 export const SignOutButton = () => (
-  <button type="button" onClick={signout}>
+  <Link to={'#'} className='nav-link' onClick={signout}>
     Sign Out
-  </button>
+  </Link>
 );

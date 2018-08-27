@@ -24,14 +24,16 @@ class AppComponent extends React.Component {
           <Navigation />
           <hr />
           <Switch>
-            <Route exact={true} path={routes.LANDING} component={Landing} />
-            <Route path={routes.SUBFORUM + '/:sub'} component={Subforum} />
-            <Route path={routes.POST + '/:post'} component={Post} />
-            <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
-            <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
-            <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
-            <Route exact={true} path={routes.HOME} component={Home} />
-            <Route exact={true} path={routes.ACCOUNT} component={Account} />
+            <div className="container">
+              <Route exact={true} path={routes.LANDING} component={Landing} />
+              <Route path={routes.SUBFORUM + '/:sub'} component={Subforum} />
+              <Route path={routes.POST + '/:post'} component={Post} />
+              <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
+              <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
+              <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
+              <Route exact={true} path={routes.HOME} component={Home} />
+              <Route exact={true} path={routes.ACCOUNT} component={Account} />
+            </div>
           </Switch>
         </div>
       </BrowserRouter>
