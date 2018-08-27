@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types'
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { MessageList } from '../../components/Home/MessageList'
@@ -8,7 +9,13 @@ const mapStateToProps = (state: any) => ({
   recipient: state.userState.recipient
 });
 
-class MessageListComponent extends React.Component {
+class MessageListContainer extends React.Component {
+  public static propTypes: {
+    currentUser: PropTypes.Validator<object>;
+    messages: PropTypes.Requireable<object>;
+    recipient: PropTypes.Requireable<object>;
+  };
+
   constructor(props: any) {
     super(props);
   }
@@ -21,6 +28,12 @@ class MessageListComponent extends React.Component {
   }
 }
 
+MessageListContainer.propTypes = {
+  currentUser: PropTypes.object.isRequired,
+  messages: PropTypes.object,
+  recipient: PropTypes.object
+}
+
 export default connect(
   mapStateToProps,
-)(MessageListComponent);
+)(MessageListContainer);
